@@ -1,6 +1,6 @@
-from D_start_lite.scene import Scene
+from D_star_lite_vs_LSS_RTA_star.src.data.scene import Scene
 
-from D_start_lite.data.py_data.simple_maps import height1, width1
+from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_maps import height1, width1
 
 scene_0 = Scene(
     0,

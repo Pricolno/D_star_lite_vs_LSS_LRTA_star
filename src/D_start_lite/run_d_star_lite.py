@@ -1,15 +1,15 @@
 import time
-from typing import Callable, Dict, List
+from typing import Callable, List
 
 from gui import Animation
 from d_star_lite import DStarLite
 from grid import OccupancyGridMap, SLAM
 import pygame
 from run_tests import SampleTest
-from read_maps_info import ReadMapsInfo
-from D_start_lite.data.py_data.simple_maps import SIMPLE_MAPS
-from D_start_lite.data.py_data.simple_scenes import SIMPLE_SCENES
-from statistics_methods import Statistic
+from D_star_lite_vs_LSS_RTA_star.src.data.read_maps_info import ReadMapsInfo
+from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
+from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
+from D_star_lite_vs_LSS_RTA_star.src.statistics_tools.statistics_methods import Statistic
 
 
 class RunDStarLite:
@@ -193,8 +193,7 @@ class RunDStarLite:
 
             stat.Trajectory_length += 1
 
-            print(
-                f"Do step №{stat.Trajectory_length}  (Trajectory_length={stat.Trajectory_length}) | Rest of way={self.get_distance_to_goal()}")
+            #print(f"Do step №{stat.Trajectory_length}  (Trajectory_length={stat.Trajectory_length}) | Rest of way={self.get_distance_to_goal()}")
 
             # slam
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.new_position)

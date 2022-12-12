@@ -1,12 +1,11 @@
 import time
 
-from priority_queue import PriorityQueue, Priority
 from ordered_dict import OrderedDictWithRemove, Priority
 
 from grid import OccupancyGridMap
-from utils import heuristic, Vertex, Vertices
+from utils import heuristic, Vertices
 
-from typing import Dict, List
+from typing import List
 import numpy as np
 
 OBSTACLE = 255
@@ -47,7 +46,6 @@ class DStarLite:
         self.s_last = s_start
         self.k_m = 0  # accumulation
         # OPEN : sorted struct
-        # self.U = PriorityQueue()
         self.U = OrderedDictWithRemove()
 
         # print(self.map)

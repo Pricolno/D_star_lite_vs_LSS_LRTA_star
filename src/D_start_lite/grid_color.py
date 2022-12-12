@@ -1,5 +1,3 @@
-
-
 class GridColor:
     LOW_BRIGHT = -100
 
@@ -20,7 +18,7 @@ class GridColor:
         for i, cur_channel in enumerate(color):
             new_color[i] = GridColor.set_brightnes1(cur_channel, brightness)
 
-        #print(f"new_color={new_color}")
+        # print(f"new_color={new_color}")
         return new_color
 
     @classmethod

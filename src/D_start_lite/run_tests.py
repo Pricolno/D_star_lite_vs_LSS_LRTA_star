@@ -1,7 +1,11 @@
+from math import floor
 from typing import List, Callable
-from statistics_methods import Statistic, FactoryStatistics
-from math import ceil, floor
-from scene import Scene
+from D_star_lite_vs_LSS_RTA_star.src.data.scene import Scene
+
+from D_star_lite_vs_LSS_RTA_star.src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
+
+#sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+#from statistics_tools.statistics_methods import Statistic, FactoryStatistics
 
 
 class SampleTest:
@@ -60,7 +64,7 @@ class RunTests:
 
     def run_test(self, sample_test: SampleTest) -> Statistic | None:
         stat = self.search_func(sample_test)
-        print(f"stat={stat}")
+        #print(f"stat={stat}")
         return stat
 
     def run_all_test(self, list_sample_tests: List[SampleTest] = None,
@@ -75,7 +79,6 @@ class RunTests:
         for number, sample_test in enumerate(list_sample_tests):
             print(f"Start run test №{number}")
             stat = self.run_test(sample_test)
-
 
             factory_statistics.add_stat(stat)
 
@@ -96,7 +99,6 @@ class RunTests:
         max_ind = floor(n * prob_r)
         assert (0 <= min_ind <= max_ind < n)
 
-
         while count_of_tests > len(list_tests):
             for cur_ind in range(min_ind, max_ind + 1):
                 list_tests.append(list_of_all_tests[cur_ind])
@@ -105,7 +107,3 @@ class RunTests:
                     break
 
         return list_tests
-
-
-
-

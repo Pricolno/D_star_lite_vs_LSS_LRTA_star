@@ -1,6 +1,5 @@
 import numpy as np
 from sortedcontainers import SortedDict
-from copy import deepcopy
 
 EPS = 1e-15
 
@@ -122,7 +121,7 @@ class OrderedDictWithRemove:
     def insert(self, pos: (int, int), priority):
         # print(f"Insert pos={pos}")
         if pos in self._map_vertex_to_key:
-            #print(f"Insert | vertex in self._map_vertex_to_key")
+            # print(f"Insert | vertex in self._map_vertex_to_key")
             key_node_del = self._map_vertex_to_key[pos]
             self._ordered_dict.pop(key_node_del)
 
@@ -138,9 +137,9 @@ class OrderedDictWithRemove:
             key_node = self._map_vertex_to_key.pop(pos)
             # print(key_node.__dict__)
             # print(key_node.priority)
-            #print(f"{key_node in self._ordered_dict} | key_node={key_node} | \n _ordered_dict={self._ordered_dict} ")
+            # print(f"{key_node in self._ordered_dict} | key_node={key_node} | \n _ordered_dict={self._ordered_dict} ")
 
-            #print(f"self._ordered_dict[{key_node}]={self._ordered_dict[key_node]}")
+            # print(f"self._ordered_dict[{key_node}]={self._ordered_dict[key_node]}")
             # del self._ordered_dict[key_node]
             # self._ordered_dict.__delitem__(key_node)
 
@@ -160,7 +159,6 @@ class OrderedDictWithRemove:
 
     def __contains__(self, pos):
         return pos in self._map_vertex_to_key
-
 
     def __len__(self):
         return self._ordered_dict.__len__()

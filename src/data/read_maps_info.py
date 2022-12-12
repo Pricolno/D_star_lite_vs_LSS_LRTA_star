@@ -1,7 +1,7 @@
 from typing import List
-from data.py_data.simple_maps import SIMPLE_MAPS
-from data.py_data.simple_scenes import SIMPLE_SCENES
-from scene import Scene
+from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
+from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
+from D_star_lite_vs_LSS_RTA_star.src.data.scene import Scene
 
 
 class ReadMapsInfo:
@@ -13,7 +13,7 @@ class ReadMapsInfo:
     PATH_TO_FILE_MAP = "maze-map\maze512-1-0.map"
     PATH_TO_FILE_SCENES = "maze-scen\maze512-1-0.map.scen"
 
-    path_to_dir_data = "data\movingai_data"
+    path_to_dir_data = "../data/movingai_data"
 
     def __init__(self, path_to_file_map=None,
                  path_to_file_scenes=None):
@@ -55,7 +55,8 @@ class ReadMapsInfo:
         """
 
         if not self.path_to_file_map == path_to_file_map:
-            print("self.path_to_file_map != path_to_file_map")
+            #print("self.path_to_file_map != path_to_file_map")
+            pass
         if path_to_file_map is None:
             path_to_file_map = self.path_to_file_map
         full_path_to_file_map = self.get_full_path_to_file_map(path_to_file_map=path_to_file_map)
@@ -134,7 +135,8 @@ class ReadMapsInfo:
         """
 
         if not self.path_to_file_scenes == path_to_file_scenes:
-            print("self.path_to_file_scenes != path_to_file_scenes")
+            #print("self.path_to_file_scenes != path_to_file_scenes")
+            pass
         if path_to_file_scenes is None:
             path_to_file_scenes = self.path_to_file_scenes
         full_path_to_file_scenes = self.get_full_path_to_file_scenes(path_to_file_scenes=path_to_file_scenes)

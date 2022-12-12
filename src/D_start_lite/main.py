@@ -1,11 +1,7 @@
 from run_d_star_lite import RunDStarLite
-from D_start_lite.data.py_data.simple_maps import SIMPLE_MAPS
-from D_start_lite.data.py_data.simple_scenes import SIMPLE_SCENES
-from read_maps_info import ReadMapsInfo
+from D_star_lite_vs_LSS_RTA_star.src.data.read_maps_info import ReadMapsInfo
 from run_tests import SampleTest, RunTests
 from pprint import pprint
-from statistics_methods import Statistic, FactoryStatistics
-from scene import Scene
 
 if __name__ == '__main__':
     read_maps_info = ReadMapsInfo()
@@ -30,6 +26,7 @@ if __name__ == '__main__':
 
 
 
+
     run_d_star_lite.load_map_cells(cur_cells)
 
     search_func = run_d_star_lite.create_search_func(gui=False,
@@ -46,7 +43,7 @@ if __name__ == '__main__':
                                                          offset=2,
                                                          )
 
-    print(select_small_data)
+    #print(select_small_data)
     factor_stats = run_tests.run_all_test(list_sample_tests=select_small_data)
 
     pprint(factor_stats.get_stats())
