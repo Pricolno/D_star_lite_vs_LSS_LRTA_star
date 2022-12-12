@@ -36,7 +36,7 @@ if __name__ == '__main__':
                                                      delay_for_every_step=10,
                                                      exploration_setting='8N',
                                                      #view_range=4,
-                                                     view_range=10,
+                                                     view_range=7,
                                                      )
 
     run_tests.load_search_func(search_func)

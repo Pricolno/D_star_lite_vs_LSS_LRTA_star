@@ -75,6 +75,8 @@ class RunTests:
         for number, sample_test in enumerate(list_sample_tests):
             print(f"Start run test №{number}")
             stat = self.run_test(sample_test)
+
+
             factory_statistics.add_stat(stat)
 
         return factory_statistics

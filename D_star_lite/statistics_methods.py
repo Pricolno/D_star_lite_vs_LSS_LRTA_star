@@ -53,6 +53,9 @@ class FactoryStatistics:
         self.stats = {name_of_statistic: [] for name_of_statistic in Statistic.name_of_statistics}
 
     def add_stat(self, statistic: Statistic):
+        if statistic is None:
+            statistic = Statistic()
+
         for str_stat, stat in statistic.gen_stats():
             self.stats[str_stat].append(stat)
 

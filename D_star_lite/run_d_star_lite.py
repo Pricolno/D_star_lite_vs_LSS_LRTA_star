@@ -39,12 +39,10 @@ class RunDStarLite:
         self.is_current_ogrid_correct_in_dstar = False
         self.label_map = label
 
-
     def load_map_ogrid(self, ogrid: OccupancyGridMap, label=None):
         self.ogrid = ogrid
         self.is_current_ogrid_correct_in_dstar = False
         self.label_map = label
-
 
     def load_map_cells(self, cells: List[List[int]], label=None):
         self.ogrid = OccupancyGridMap.covert_list2d_to_ogrid(cells)
@@ -165,7 +163,14 @@ class RunDStarLite:
                 self.dstar.sensed_map = slam_map
 
                 # move and compute path
-                path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
+                RUNNING_FLAG, path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
+                # if RUNNING_FLAG == self.dstar.BUG_OF_LOOPING:
+                #    print(f"RUNNING_FLAG={RUNNING_FLAG}")
+                #    return None
+                if RUNNING_FLAG == self.dstar.TIME_LIMIT:
+                    print(f"RUNNING_FLAG={RUNNING_FLAG}")
+
+                print(f"RUNNING_FLAG={RUNNING_FLAG}")
 
             # update the map
             # print(path)
@@ -177,7 +182,7 @@ class RunDStarLite:
 
         stat = Statistic()
         stat.Trajectory_length = 0
-        #stat.Searchesc = 0
+        # stat.Searchesc = 0
 
         final_path = [self.new_position]
         if self.new_position == self.s_goal:
@@ -188,7 +193,8 @@ class RunDStarLite:
 
             stat.Trajectory_length += 1
 
-            print(f"Do step №{stat.Trajectory_length}  (Trajectory_length={stat.Trajectory_length}) | Rest of way={self.get_distance_to_goal()}")
+            print(
+                f"Do step №{stat.Trajectory_length}  (Trajectory_length={stat.Trajectory_length}) | Rest of way={self.get_distance_to_goal()}")
 
             # slam
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.new_position)
@@ -197,7 +203,10 @@ class RunDStarLite:
             self.dstar.sensed_map = slam_map
 
             # move and compute path
-            cur_path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
+            RUNNING_FLAG, cur_path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
+            if RUNNING_FLAG == self.dstar.TIME_LIMIT:
+                print(f"RUNNING_FLAG={RUNNING_FLAG} | path={cur_path}")
+                return None
 
             # print(f"Find len path = {len(cur_path)}. path[1]={cur_path[1]}")
 

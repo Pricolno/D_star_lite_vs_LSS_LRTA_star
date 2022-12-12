@@ -2,7 +2,7 @@ from sortedcontainers import SortedDict
 from ordered_dict import OrderedDictWithRemove, Priority
 from utils import Vertex
 import numpy as np
-
+import time
 
 order = SortedDict()
 
@@ -45,3 +45,8 @@ a = np.inf
 b = np.inf
 
 print(abs(a - b) < 3)
+
+
+cur_time = time.time()
+time.sleep(1)
+print(time.time() - cur_time)

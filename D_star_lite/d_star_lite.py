@@ -1,6 +1,7 @@
+import time
+
 from priority_queue import PriorityQueue, Priority
 from ordered_dict import OrderedDictWithRemove, Priority
-
 
 from grid import OccupancyGridMap
 from utils import heuristic, Vertex, Vertices
@@ -13,6 +14,13 @@ UNOCCUPIED = 0
 
 
 class DStarLite:
+    # BUG_OF_LOOPING = 1000
+    WORK_IS_OVER = 1
+    TIME_LIMIT = 400
+
+    LAST_SET_TIMER = None
+    TIME_LIMIT_FOR_FIND_MOVE = 30.  # in second
+
     def __init__(self, map: OccupancyGridMap = None,
                  s_start: (int, int) = None, s_goal: (int, int) = None,
                  restart=False,
@@ -22,6 +30,7 @@ class DStarLite:
         :param s_start: start location
         :param s_goal: end location
         """
+
         self.new_edges_and_old_costs = None
 
         # algorithm start
@@ -38,9 +47,8 @@ class DStarLite:
         self.s_last = s_start
         self.k_m = 0  # accumulation
         # OPEN : sorted struct
-        #self.U = PriorityQueue()
+        # self.U = PriorityQueue()
         self.U = OrderedDictWithRemove()
-
 
         # print(self.map)
 
@@ -48,10 +56,10 @@ class DStarLite:
         self.g = self.rhs.copy()
 
         if True or not restart:
-            #print(f"DStarLite.init: kwargs={kwargs}")
+            # print(f"DStarLite.init: kwargs={kwargs}")
             self.sensed_map = OccupancyGridMap(y_size=self.map.y_size,
                                                x_size=self.map.x_size,
-                                               #exploration_setting='8N',
+                                               # exploration_setting='8N',
                                                **kwargs)
 
         self.rhs[self.s_goal] = 0
@@ -91,29 +99,29 @@ class DStarLite:
             self.U.remove(u)
 
     def compute_shortest_path(self):
-        #print(f"len(compute_shortest_path)={len(self.U)} | U.top_key()={self.U.top_key()} calculate_key(self.s_start)={self.s_start}")
+        # print(f"len(compute_shortest_path)={len(self.U)} | U.top_key()={self.U.top_key()} calculate_key(self.s_start)={self.s_start}")
 
         while self.U.top_key() < self.calculate_key(self.s_start) or self.rhs[self.s_start] > self.g[self.s_start]:
             u = self.U.top()
             k_old = self.U.top_key()
             k_new = self.calculate_key(u)
-            #print(f"D_start_lite.compute_shortest_path u={u} k_old={k_old} k_new={k_new}")
+            # print(f"D_start_lite.compute_shortest_path u={u} k_old={k_old} k_new={k_new}")
 
             if k_old < k_new:
-                #print(f"COMPUTE_S_P |    K_OLD: {k_old}, K_NEW: {k_new}")
+                # print(f"COMPUTE_S_P |    K_OLD: {k_old}, K_NEW: {k_new}")
                 self.U.update(u, k_new)
             elif self.g[u] > self.rhs[u]:
-                #print(f"COMPUTE_S_P |    g: {self.g[u]}, rhs: {self.rhs[u]}")
+                # print(f"COMPUTE_S_P |    g: {self.g[u]}, rhs: {self.rhs[u]}")
                 self.g[u] = self.rhs[u]
                 self.U.remove(u)
                 pred = self.sensed_map.succ(vertex=u)
                 for s in pred:
                     if s != self.s_goal:
-                        #print(f"COMPUTE_S_P |        rhs: {self.rhs[s]}, new rhs: {min(self.rhs[s], self.c(s, u) + self.g[u])}")
+                        # print(f"COMPUTE_S_P |        rhs: {self.rhs[s]}, new rhs: {min(self.rhs[s], self.c(s, u) + self.g[u])}")
                         self.rhs[s] = min(self.rhs[s], self.c(s, u) + self.g[u])
                     self.update_vertex(s)
             else:
-                #print(f"COMPUTE_S_P |    g: inf")
+                # print(f"COMPUTE_S_P |    g: inf")
                 self.g_old = self.g[u]
                 self.g[u] = float('inf')
                 pred = self.sensed_map.succ(vertex=u)
@@ -136,47 +144,67 @@ class DStarLite:
         self.new_edges_and_old_costs = None
         return new_edges_and_old_costs
 
-    def move_and_replan(self, robot_position: (int, int)):
+    @classmethod
+    def check_bug_of_looping(cls, path: List[tuple[int, int]]):
+        # s t s t s  (s, t - any position, mean bad loop)
+        # if len(path) >= 4:
+
+        if len(path) >= 8:
+            if path[-1] == path[-3] == path[-5] == path[-7] \
+                    and path[-8] == path[-6] == path[-2] == path[-4]:
+                return True
+        return False
+
+    def set_timer(self):
+        """in seconds"""
+        self.LAST_SET_TIMER = time.time()
+
+    def get_time_from_timer(self):
+        """in seconds"""
+        assert self.LAST_SET_TIMER is not None
+        return time.time() - self.LAST_SET_TIMER
+
+    def move_and_replan(self, robot_position: (int, int)) -> tuple['Flag_running', 'path', 'g', 'rhs']:
         path = [robot_position]
         self.s_start = robot_position
         self.s_last = self.s_start
-        #print(f"DStarLite.move_and_replan start robot_position={robot_position}")
+        # print(f"DStarLite.move_and_replan start robot_position={robot_position}")
         self.compute_shortest_path()
-        #print(f"DStarLite.move_and_replan finish firsh compute_shortest_path")
+        # print(f"DStarLite.move_and_replan finish firsh compute_shortest_path")
+
+        self.set_timer()
 
         while self.s_start != self.s_goal:
-            assert (self.rhs[self.s_start] != float('inf')), "There is no known path!"
+            if self.get_time_from_timer() > self.TIME_LIMIT_FOR_FIND_MOVE:
+                return self.TIME_LIMIT, path, self.g, self.rhs
 
+            assert (self.rhs[self.s_start] != float('inf')), "There is no known path!"
 
             succ = self.sensed_map.succ(self.s_start, avoid_obstacles=True)
 
-
             min_s = float('inf')
             arg_min = None
-            #print(f"move_and_replan | succ={succ}")
+            # print(f"move_and_replan | succ={succ}")
             for s_ in succ:
                 temp = self.c(self.s_start, s_) + self.g[s_]
                 if temp < min_s:
                     min_s = temp
                     arg_min = s_
 
-
-
-            #print(f"move_and_replan | arg_min ={arg_min} min_s={min_s} cur={self.s_start} | DEBUG")
+            # print(f"move_and_replan | arg_min ={arg_min} min_s={min_s} cur={self.s_start} | DEBUG")
 
             ### algorithm sometimes gets stuck here for some reason !!! FIX
             self.s_start = arg_min
             path.append(self.s_start)
+
             # scan graph for changed costs
             changed_edges_with_old_cost = self.rescan()
 
-
-            #print(f"move_and_replan | changed_edges_with_old_cost={changed_edges_with_old_cost} | DEBUG")
+            # print(f"move_and_replan | changed_edges_with_old_cost={changed_edges_with_old_cost} | DEBUG")
             # if any edge costs changed
             if changed_edges_with_old_cost:
 
-                #print(f"self.s_last={self.s_last} self.s_start={self.s_start}")
-
+                # print(f"self.s_last={self.s_last} self.s_start={self.s_start}")
 
                 self.k_m += heuristic(self.s_last, self.s_start)
                 self.s_last = self.s_start
@@ -189,7 +217,6 @@ class DStarLite:
                     for u, c_old in succ_v.items():
                         c_new = self.c(u, v)
                         # Update the edge cost c(u, v) (?)
-
 
                         if c_old > c_new:
                             if u != self.s_goal:
@@ -205,11 +232,10 @@ class DStarLite:
                                 self.rhs[u] = min_s
 
                         self.update_vertex(u)
-                            #self.update_vertex(u)
+                        # self.update_vertex(u)
 
-                #self.compute_shortest_path()
+                # self.compute_shortest_path()
             self.compute_shortest_path()
-
 
             # DEBUG
             '''
@@ -230,9 +256,8 @@ class DStarLite:
             '''
             # DEBUG
 
-
         # print("path found!")
-        return path, self.g, self.rhs
+        return self.WORK_IS_OVER, path, self.g, self.rhs
 
     def restart_d_star(self, **kwargs):
         self = self.__init__(restart=True, **kwargs)
