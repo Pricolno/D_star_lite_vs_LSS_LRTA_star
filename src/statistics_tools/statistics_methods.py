@@ -25,6 +25,8 @@ class Statistic:
         self.Search_time_per_search = Search_time_per_search
         self.Search_time_per_action = Search_time_per_action
 
+        self.distribution_Trajectory_length_per_search = None
+
     @classmethod
     def get_name_of_statistics(cls):
         return cls.name_of_statistics

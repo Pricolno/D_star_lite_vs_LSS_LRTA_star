@@ -24,7 +24,7 @@ class Vertex:
     def __lt__(self, other):
         return self.pos < other.pos
 
-    
+
 class Vertices:
     def __init__(self):
         self.list = []
@@ -35,6 +35,9 @@ class Vertices:
     @property
     def vertices(self):
         return self.list
+
+    def __len__(self):
+        return len(self.list)
 
 
 def heuristic(p: (int, int), q: (int, int)) -> float:

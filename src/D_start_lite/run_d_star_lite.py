@@ -1,6 +1,7 @@
 import time
 from typing import Callable, List
 import pygame
+import numpy as np
 
 from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.gui import Animation
 from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.d_star_lite import DStarLite
@@ -177,12 +178,19 @@ class RunDStarLite:
             # drive gui
             self.gui.run_game(path=path, auto_play=True)
 
-    def run_without_gui(self) -> Statistic:
+    def run_without_gui(self) -> Statistic | None:
         self.restart_all()
 
         stat = Statistic()
         stat.Trajectory_length = 0
-        # stat.Searchesc = 0
+        #
+        stat.distribution_Trajectory_length_per_search = []
+        stat.Trajectory_length_per_search = None
+        last_time_saw_new_obstacle = 0
+
+
+
+
 
         final_path = [self.new_position]
         if self.new_position == self.s_goal:
@@ -190,22 +198,27 @@ class RunDStarLite:
             return stat
 
         while True:
-
             stat.Trajectory_length += 1
 
             #print(f"Do step №{stat.Trajectory_length}  (Trajectory_length={stat.Trajectory_length}) | Rest of way={self.get_distance_to_goal()}")
 
             # slam
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.new_position)
+            # score stats: distribution_Trajectory_length_per_search
+            last_time_saw_new_obstacle += 1
+            if len(new_edges_and_old_costs) > 0:
+                stat.distribution_Trajectory_length_per_search.append(last_time_saw_new_obstacle)
+                last_time_saw_new_obstacle = 0
+
 
             self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
             self.dstar.sensed_map = slam_map
-
             # move and compute path
             RUNNING_FLAG, cur_path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
             if RUNNING_FLAG == self.dstar.TIME_LIMIT:
                 print(f"RUNNING_FLAG={RUNNING_FLAG} | path={cur_path}")
                 return None
+
 
             # print(f"Find len path = {len(cur_path)}. path[1]={cur_path[1]}")
 
@@ -220,7 +233,8 @@ class RunDStarLite:
         # self.quick_save_image(name_file='quick_save')
         # print(f"Final_path={final_path}")
 
-        # stat = Statistic()
+        stat.Trajectory_length_per_search = np.array(stat.distribution_Trajectory_length_per_search).mean()
+
         return stat
 
     def run_test(self, sample_test: SampleTest,
