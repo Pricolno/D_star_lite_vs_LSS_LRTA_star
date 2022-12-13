@@ -29,6 +29,8 @@ class DStarLite:
         :param s_start: start location
         :param s_goal: end location
         """
+        # for calc stats
+        self.Cell_expansions = None
 
         self.new_edges_and_old_costs = None
 
@@ -100,6 +102,9 @@ class DStarLite:
         # print(f"len(compute_shortest_path)={len(self.U)} | U.top_key()={self.U.top_key()} calculate_key(self.s_start)={self.s_start}")
 
         while self.U.top_key() < self.calculate_key(self.s_start) or self.rhs[self.s_start] > self.g[self.s_start]:
+            # calc stat.Cell_expansions
+            self.Cell_expansions += 1
+
             u = self.U.top()
             k_old = self.U.top_key()
             k_new = self.calculate_key(u)

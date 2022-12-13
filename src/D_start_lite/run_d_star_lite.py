@@ -187,8 +187,11 @@ class RunDStarLite:
         stat.distribution_Trajectory_length_per_search = []
         stat.Trajectory_length_per_search = None
         last_time_saw_new_obstacle = 0
-
-
+        #
+        stat.Searchesc = 0
+        #
+        stat.Cell_expansions = 0
+        self.dstar.Cell_expansions = 0
 
 
 
@@ -209,6 +212,8 @@ class RunDStarLite:
             if len(new_edges_and_old_costs) > 0:
                 stat.distribution_Trajectory_length_per_search.append(last_time_saw_new_obstacle)
                 last_time_saw_new_obstacle = 0
+
+                stat.Searchesc += 1
 
 
             self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
@@ -234,6 +239,7 @@ class RunDStarLite:
         # print(f"Final_path={final_path}")
 
         stat.Trajectory_length_per_search = np.array(stat.distribution_Trajectory_length_per_search).mean()
+        stat.Cell_expansions = self.dstar.Cell_expansions
 
         return stat
 
