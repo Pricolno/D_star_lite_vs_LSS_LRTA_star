@@ -1,6 +1,8 @@
 import numpy as np
-from utils import get_movements_4n, get_movements_8n, heuristic, Vertices, Vertex
 from typing import Dict, List
+
+from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.utils import get_movements_4n, get_movements_8n, heuristic, Vertices, Vertex
+
 
 OBSTACLE = 255
 UNOCCUPIED = 0

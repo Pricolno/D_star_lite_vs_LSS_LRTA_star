@@ -1,10 +1,10 @@
 import time
 from typing import Callable, List
-
-from gui import Animation
-from d_star_lite import DStarLite
-from grid import OccupancyGridMap, SLAM
 import pygame
+
+from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.gui import Animation
+from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.d_star_lite import DStarLite
+from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.grid import OccupancyGridMap, SLAM
 from D_star_lite_vs_LSS_LRTA_star.src.data.run_tests import SampleTest
 from D_star_lite_vs_LSS_LRTA_star.src.data.read_maps_info import ReadMapsInfo
 from D_star_lite_vs_LSS_LRTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS

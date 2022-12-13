@@ -38,7 +38,7 @@ class SampleTest:
 
     @classmethod
     def map_list_scenes_to_list_tests(cls, cells: List[List[int]],
-                                      list_scenes: Scene,
+                                      list_scenes: List[Scene],
                                       label=None) -> List['SampleTest']:
         list_tests = []
         for scene in list_scenes:
@@ -55,7 +55,7 @@ class RunTests:
         self.search_func = None
         self.list_sample_tests = None
 
-    def load_search_func(self, search_func: Callable[[SampleTest], None]):
+    def load_search_func(self, search_func: Callable[[SampleTest], Statistic]):
         self.search_func = search_func
 
     def load_sample_tests(self, list_sample_tests: List[SampleTest]):
