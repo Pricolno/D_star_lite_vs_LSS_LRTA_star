@@ -19,6 +19,9 @@ class SampleTest:
 
         # need to understand is same two cells without explicit check
         self.label = label
+        self.Optimal_length = None
+        if scene is not None:
+            self.Optimal_length = scene.optimal_length
 
         self.scene = scene
 
@@ -29,6 +32,7 @@ class SampleTest:
     def map_scene_to_test(cls, cells: List[List[int]],
                           scene: Scene,
                           label=None) -> "SampleTest":
+
         sample_test = SampleTest(cells=cells,
                                  start=scene.start, goal=scene.goal,
                                  label=label,

@@ -48,7 +48,7 @@ if "__main__" == __name__:
 
     # select specific data from all data
     select_small_data = run_tests.select_tests_in_bounds(prob_l=0.7, prob_r=0.8,
-                                                         count_of_tests=2,
+                                                         count_of_tests=10,
                                                          offset=2,
                                                          )
 

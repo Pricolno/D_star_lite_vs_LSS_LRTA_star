@@ -6,7 +6,8 @@ class Statistic:
         "Trajectory_length_per_search",
         "Search_time",
         "Search_time_per_search",
-        "Search_time_per_action"
+        "Search_time_per_action",
+        "Optimal_length"
     ]
 
     def __init__(self, Cell_expansions=None,
@@ -15,7 +16,8 @@ class Statistic:
                  Trajectory_length_per_search=None,
                  Search_time=None,
                  Search_time_per_search=None,
-                 Search_time_per_action=None):
+                 Search_time_per_action=None,
+                 Optimal_length=None):
 
         self.Cell_expansions = Cell_expansions
         self.Searchesc = Searchesc
@@ -24,6 +26,7 @@ class Statistic:
         self.Search_time = Search_time
         self.Search_time_per_search = Search_time_per_search
         self.Search_time_per_action = Search_time_per_action
+        self.Optimal_length = Optimal_length
 
         self.distribution_Trajectory_length_per_search = None
         self.distribution_Search_time_per_search = None

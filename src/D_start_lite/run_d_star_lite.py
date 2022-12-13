@@ -238,8 +238,13 @@ class RunDStarLite:
             # move and compute path
             RUNNING_FLAG, cur_path, g, rhs = self.dstar.move_and_replan(robot_position=self.new_position)
             if RUNNING_FLAG == self.dstar.TIME_LIMIT:
-                print(f"RUNNING_FLAG={RUNNING_FLAG} | path={cur_path}")
-                return None
+                # (22, 8), (23, 8), (22, 8), (23, 8) - path |  stay at couple poses
+                # prob_l=0.7, prob=0.8, count_of_tests=10, offset=2 | 6 Test (0 .. 6, 7 .. 9)
+                # (prob_l=0.7, prob=0.8, count_of_tests=10, offset=8)
+                print(f"Walking is failed by TIME_LIMIT!")
+
+                #print(f"RUNNING_FLAG={RUNNING_FLAG} | path={cur_path}")
+                return Statistic()
 
 
             # print(f"Find len path = {len(cur_path)}. path[1]={cur_path[1]}")
@@ -286,6 +291,8 @@ class RunDStarLite:
 
         if not gui:
             stat = self.run_without_gui()
+            # get Optimal_length from movingAi otherwise None
+            stat.Optimal_length = sample_test.Optimal_length
 
             return stat
         else:
