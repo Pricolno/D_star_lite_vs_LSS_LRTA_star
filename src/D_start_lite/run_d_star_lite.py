@@ -15,6 +15,7 @@ from D_star_lite_vs_LSS_LRTA_star.src.statistics_tools.statistics_methods import
 
 class RunDStarLite:
     def __init__(self):
+        self.last_time_set_timer = None
         self.ogrid = None
         self.is_current_ogrid_correct_in_dstar = False
         self.label_map = None
@@ -132,6 +133,18 @@ class RunDStarLite:
     def get_distance_to_goal(self):
         return ((self.s_goal[0] - self.new_position[0]) ** 2 + (self.s_goal[1] - self.new_position[1]) ** 2) ** 0.5
 
+    def set_timer(self):
+        """in second"""
+        self.last_time_set_timer = time.time()
+
+    def get_timer(self, reloud=False):
+        """return: in milliseconds"""
+        time_sec = time.time() - self.last_time_set_timer
+        if reloud:
+            self.set_timer()
+        return time_sec * 1000
+
+
     def run_with_gui(self, delay_for_every_step=50,
                      **kwargs):
         self.restart_all(launch_gui=True,
@@ -192,8 +205,11 @@ class RunDStarLite:
         #
         stat.Cell_expansions = 0
         self.dstar.Cell_expansions = 0
-
-
+        #
+        stat.Search_time = 0
+        stat.Search_time_per_search = None
+        stat.distribution_Search_time_per_search = []
+        self.set_timer()
 
         final_path = [self.new_position]
         if self.new_position == self.s_goal:
@@ -215,6 +231,7 @@ class RunDStarLite:
 
                 stat.Searchesc += 1
 
+                stat.distribution_Search_time_per_search.append(self.get_timer(reloud=True))
 
             self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
             self.dstar.sensed_map = slam_map
@@ -238,8 +255,13 @@ class RunDStarLite:
         # self.quick_save_image(name_file='quick_save')
         # print(f"Final_path={final_path}")
 
-        stat.Trajectory_length_per_search = np.array(stat.distribution_Trajectory_length_per_search).mean()
+        stat.distribution_Trajectory_length_per_search = np.array(stat.distribution_Trajectory_length_per_search)
+        stat.Trajectory_length_per_search = stat.distribution_Trajectory_length_per_search.mean()
         stat.Cell_expansions = self.dstar.Cell_expansions
+
+        stat.distribution_Search_time_per_search = np.array(stat.distribution_Search_time_per_search)
+        stat.Search_time_per_search = stat.distribution_Search_time_per_search.mean()
+        stat.Search_time = stat.distribution_Search_time_per_search.sum()
 
         return stat
 
