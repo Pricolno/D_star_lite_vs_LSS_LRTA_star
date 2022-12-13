@@ -5,11 +5,11 @@ from gui import Animation
 from d_star_lite import DStarLite
 from grid import OccupancyGridMap, SLAM
 import pygame
-from run_tests import SampleTest
-from D_star_lite_vs_LSS_RTA_star.src.data.read_maps_info import ReadMapsInfo
-from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
-from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
-from D_star_lite_vs_LSS_RTA_star.src.statistics_tools.statistics_methods import Statistic
+from D_star_lite_vs_LSS_LRTA_star.src.data.run_tests import SampleTest
+from D_star_lite_vs_LSS_LRTA_star.src.data.read_maps_info import ReadMapsInfo
+from D_star_lite_vs_LSS_LRTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
+from D_star_lite_vs_LSS_LRTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
+from D_star_lite_vs_LSS_LRTA_star.src.statistics_tools.statistics_methods import Statistic
 
 
 class RunDStarLite:

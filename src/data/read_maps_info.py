@@ -1,7 +1,7 @@
 from typing import List
-from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
-from D_star_lite_vs_LSS_RTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
-from D_star_lite_vs_LSS_RTA_star.src.data.scene import Scene
+from D_star_lite_vs_LSS_LRTA_star.src.data.py_data.simple_maps import SIMPLE_MAPS
+from D_star_lite_vs_LSS_LRTA_star.src.data.py_data.simple_scenes import SIMPLE_SCENES
+from D_star_lite_vs_LSS_LRTA_star.src.data.scene import Scene
 
 
 class ReadMapsInfo:
