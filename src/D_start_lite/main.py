@@ -1,6 +1,6 @@
 from run_d_star_lite import RunDStarLite
-from D_star_lite_vs_LSS_LRTA_star.src.data.read_maps_info import ReadMapsInfo
-from D_star_lite_vs_LSS_LRTA_star.src.data.run_tests import SampleTest, RunTests
+from src.data.read_maps_info import ReadMapsInfo
+from src.data.run_tests import SampleTest, RunTests
 from pprint import pprint
 
 if __name__ == '__main__':

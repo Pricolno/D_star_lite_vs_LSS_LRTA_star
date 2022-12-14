@@ -1,7 +1,7 @@
 from math import floor
 from typing import List, Callable
-from D_star_lite_vs_LSS_LRTA_star.src.data.scene import Scene
-from D_star_lite_vs_LSS_LRTA_star.src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
+from src.data.scene import Scene
+from src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
 
 #sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 #from statistics_tools.statistics_methods import Statistic, FactoryStatistics

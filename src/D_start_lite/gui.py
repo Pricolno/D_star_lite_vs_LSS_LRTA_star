@@ -1,8 +1,8 @@
 import pygame
 from win32api import GetSystemMetrics
 
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.grid import OccupancyGridMap
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.grid_color import GridColor
+from src.D_start_lite.grid import OccupancyGridMap
+from src.D_start_lite.grid_color import GridColor
 
 
 # Define some colors

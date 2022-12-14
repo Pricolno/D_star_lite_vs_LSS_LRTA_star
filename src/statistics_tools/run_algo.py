@@ -1,13 +1,13 @@
 import pprint
 
 # reading maps and scenes
-from D_star_lite_vs_LSS_LRTA_star.src.data.read_maps_info import ReadMapsInfo
+from src.data.read_maps_info import ReadMapsInfo
 
 # struct for general test
-from D_star_lite_vs_LSS_LRTA_star.src.data.run_tests import SampleTest, RunTests
+from src.data.run_tests import SampleTest, RunTests
 
 # Dlite
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.run_d_star_lite import RunDStarLite
+from src.D_start_lite.run_d_star_lite import RunDStarLite
 
 LIST_PATH_TO_FILE_MAP = ["den011d.map/den011d.map",
                          "street-map/Berlin_0_256.map",

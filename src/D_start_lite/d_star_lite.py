@@ -2,9 +2,9 @@ import time
 from typing import List
 import numpy as np
 
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.ordered_dict import OrderedDictWithRemove, Priority
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.grid import OccupancyGridMap
-from D_star_lite_vs_LSS_LRTA_star.src.D_start_lite.utils import heuristic, Vertices
+from src.D_start_lite.ordered_dict import OrderedDictWithRemove, Priority
+from src.D_start_lite.grid import OccupancyGridMap
+from src.D_start_lite.utils import heuristic, Vertices
 
 
 
