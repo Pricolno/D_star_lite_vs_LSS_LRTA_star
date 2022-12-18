@@ -150,6 +150,22 @@ class RunDStarLite:
         self.restart_all(launch_gui=True,
                          delay_for_every_step=delay_for_every_step,
                          **kwargs)
+        stat = Statistic()
+        stat.Trajectory_length = 0
+        #
+        stat.distribution_Trajectory_length_per_search = []
+        stat.Trajectory_length_per_search = None
+        last_time_saw_new_obstacle = 0
+        #
+        stat.Searchesc = 0
+        #
+        stat.Cell_expansions = 0
+        self.dstar.Cell_expansions = 0
+        #
+        stat.Search_time = 0
+        stat.Search_time_per_search = None
+        stat.distribution_Search_time_per_search = []
+
 
         while not self.gui.done:
             if self.gui.restart:

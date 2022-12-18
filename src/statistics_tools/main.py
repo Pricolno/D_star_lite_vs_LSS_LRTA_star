@@ -19,12 +19,14 @@ if __name__ == "__main__":
 
     Quick_Test_Run = QuickTestRun()
 
-    Quick_Test_Run.read_data_from_files(path_to_file_map=LIST_PATH_TO_FILE_MAP[1],
-                                        path_to_file_scenes=LIST_PATH_TO_FILE_SCENES[1])
+    Quick_Test_Run.read_data_from_files(path_to_file_map=LIST_PATH_TO_FILE_MAP[0],
+                                        path_to_file_scenes=LIST_PATH_TO_FILE_SCENES[0])
 
-    Quick_Test_Run.load_d_star_lite()
-    Quick_Test_Run.select_tests_random(count_of_tests=2,
-                                       prob_l=0.6, prob_r=0.9)
+    Quick_Test_Run.load_d_star_lite(gui=False,
+                                    view_range=10)
+    Quick_Test_Run.select_tests_random(count_of_tests=10,
+                                       prob_l=0.1, prob_r=0.2,
+                                       seed=1332)
     factor_stats = Quick_Test_Run.run_all_test()
 
     pprint(factor_stats.get_stats())
