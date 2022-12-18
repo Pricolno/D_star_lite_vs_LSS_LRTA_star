@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Dict, List
 
-from src.D_start_lite.utils import get_movements_4n, get_movements_8n, heuristic, Vertices, Vertex
+from src.D_start_lite.utils import get_movements_4n, get_movements_8n, heuristic_4N, heuristic_8N, Vertices, Vertex
 
 
 OBSTACLE = 255
@@ -9,11 +9,16 @@ UNOCCUPIED = 0
 
 
 class OccupancyGridMap:
-    def __init__(self, y_size, x_size, exploration_setting='8N',
+    def __init__(self, y_size, x_size, exploration_setting='4N',
                  **kwargs):
         """
         set initial values for the map occupancy grid
         """
+        if exploration_setting == '4N':
+            self.heuristic = heuristic_4N
+        elif exploration_setting == '8N':
+            self.heuristic = heuristic_8N
+
         #print(f"OccupancyGridMap.__init__: exploration_setting={exploration_setting}")
         self.y_size = y_size
         self.x_size = x_size
@@ -219,6 +224,8 @@ class SLAM:
                                          x_size=map.x_size,
                                          exploration_setting=map.exploration_setting)
         self.view_range = view_range
+        self.heuristic = map.heuristic
+
 
     def restart_slam(self, **kwargs):
         # change 8N -> 4N
@@ -238,7 +245,7 @@ class SLAM:
         if not self.slam_map.is_unoccupied(u) or not self.slam_map.is_unoccupied(v):
             return float('inf')
         else:
-            return heuristic(u, v)
+            return self.heuristic(u, v)
 
     def rescan(self, global_position: (int, int)):
         #print(f"SLAM.rescan start global_position={global_position}")

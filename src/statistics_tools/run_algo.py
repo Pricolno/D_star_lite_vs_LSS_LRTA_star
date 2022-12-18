@@ -39,7 +39,7 @@ if "__main__" == __name__:
     # create search_func:Dstar_lite (soon will be LSS_LRTA_star)
     search_func = run_d_star_lite.create_search_func(gui=False,
                                                      delay_for_every_step=10,
-                                                     exploration_setting='8N',
+                                                     exploration_setting='4N',
                                                      # view_range=4,
                                                      view_range=7,
                                                      )
@@ -48,7 +48,7 @@ if "__main__" == __name__:
 
     # select specific data from all data
     select_small_data = run_tests.select_tests_in_bounds(prob_l=0.7, prob_r=0.8,
-                                                         count_of_tests=10,
+                                                         count_of_tests=2,
                                                          offset=2,
                                                          )
 

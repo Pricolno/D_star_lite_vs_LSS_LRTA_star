@@ -1,57 +1,15 @@
 from math import floor
 from typing import List, Callable
-from src.data.scene import Scene
+
 from src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
+from src.Dijkstra.run_dijkstra import RunDijkstra
+from src.data.sample_test import SampleTest
 
-#sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-#from statistics_tools.statistics_methods import Statistic, FactoryStatistics
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+# from statistics_tools.statistics_methods import Statistic, FactoryStatistics
 
 
-class SampleTest:
-    def __init__(self, cells: List[List[int]],
-                 start: (int, int),
-                 goal: (int, int),
-                 label=None,
-                 scene: Scene = None):
-        self.start = start
-        self.goal = goal
-        self.cells = cells
 
-        # need to understand is same two cells without explicit check
-        self.label = label
-        self.Optimal_length = None
-        if scene is not None:
-            self.Optimal_length = scene.optimal_length
-
-        self.scene = scene
-
-    def get_shape(self):
-        return len(self.cells), len(self.cells[0])
-
-    @classmethod
-    def map_scene_to_test(cls, cells: List[List[int]],
-                          scene: Scene,
-                          label=None) -> "SampleTest":
-
-        sample_test = SampleTest(cells=cells,
-                                 start=scene.start, goal=scene.goal,
-                                 label=label,
-                                 scene=scene)
-
-        return sample_test
-
-    @classmethod
-    def map_list_scenes_to_list_tests(cls, cells: List[List[int]],
-                                      list_scenes: List[Scene],
-                                      label=None) -> List['SampleTest']:
-        list_tests = []
-        for scene in list_scenes:
-            list_tests.append(cls.map_scene_to_test(cells, scene, label))
-        return list_tests
-
-    def __str__(self):
-        str_sampe_test = f"""SampleTest:start={self.start}, goal={self.goal}, shapes={self.get_shape()}"""
-        return str_sampe_test
 
 
 class RunTests:
@@ -65,9 +23,15 @@ class RunTests:
     def load_sample_tests(self, list_sample_tests: List[SampleTest]):
         self.list_sample_tests = list_sample_tests
 
-    def run_test(self, sample_test: SampleTest) -> Statistic | None:
+    def run_test(self, sample_test: SampleTest) -> Statistic:
+        run_dij = RunDijkstra()
+        optimal_length = run_dij.run_dijkstra_on_test(sample_test)
+        if optimal_length is None:
+            print(f"No exists path sample_test={sample_test}")
+
         stat = self.search_func(sample_test)
-        #print(f"stat={stat}")
+        stat.Optimal_length = optimal_length
+        # print(f"stat={stat}")
         return stat
 
     def run_all_test(self, list_sample_tests: List[SampleTest] = None,

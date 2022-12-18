@@ -73,6 +73,9 @@ class Dijkstra:
             g, u = hq.heappop(queue)
             visited[u] = True
 
+            if u == self.goal:
+                break
+
             for u_next in self.get_movements(*u):
                 if not self.is_can_go(u_next):
                     continue
@@ -82,6 +85,7 @@ class Dijkstra:
 
                 if visited[u_next]:
                     continue
+
 
                 cost = self.heuristic(u, u_next)
                 g_next = g + cost

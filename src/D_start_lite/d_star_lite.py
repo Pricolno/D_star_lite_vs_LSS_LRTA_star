@@ -4,7 +4,7 @@ import numpy as np
 
 from src.D_start_lite.ordered_dict import OrderedDictWithRemove, Priority
 from src.D_start_lite.grid import OccupancyGridMap
-from src.D_start_lite.utils import heuristic, Vertices
+from src.D_start_lite.utils import heuristic_4N, heuristic_8N, Vertices
 
 
 
@@ -29,6 +29,15 @@ class DStarLite:
         :param s_start: start location
         :param s_goal: end location
         """
+        self.heuristic = heuristic_4N
+        # self.heuristic = heuristic_8N
+        if "exploration_setting" in kwargs:
+            if kwargs['exploration_setting'] == '4N':
+                self.heuristic = heuristic_4N
+            elif kwargs['exploration_setting'] == '8N':
+                self.heuristic = heuristic_8N
+
+
         # for calc stats
         self.Cell_expansions = None
 
@@ -63,14 +72,14 @@ class DStarLite:
                                                **kwargs)
 
         self.rhs[self.s_goal] = 0
-        self.U.insert(self.s_goal, Priority(heuristic(self.s_start, self.s_goal), 0))
+        self.U.insert(self.s_goal, Priority(self.heuristic(self.s_start, self.s_goal), 0))
 
     def calculate_key(self, s: (int, int)):
         """
         param s: the vertex we want to calculate key
         :return: Priority class of the two keys
         """
-        k1 = min(self.g[s], self.rhs[s]) + heuristic(self.s_start, s) + self.k_m
+        k1 = min(self.g[s], self.rhs[s]) + self.heuristic(self.s_start, s) + self.k_m
         k2 = min(self.g[s], self.rhs[s])
         return Priority(k1, k2)
 
@@ -84,7 +93,7 @@ class DStarLite:
         if not self.sensed_map.is_unoccupied(u) or not self.sensed_map.is_unoccupied(v):
             return float('inf')
         else:
-            return heuristic(u, v)
+            return self.heuristic(u, v)
 
     def contain(self, u: (int, int)) -> (int, int):
         # return u in self.U.vertices_in_heap
@@ -209,7 +218,7 @@ class DStarLite:
 
                 # print(f"self.s_last={self.s_last} self.s_start={self.s_start}")
 
-                self.k_m += heuristic(self.s_last, self.s_start)
+                self.k_m += self.heuristic(self.s_last, self.s_start)
                 self.s_last = self.s_start
 
                 # for all directed edges (u,v) with changed edge costs

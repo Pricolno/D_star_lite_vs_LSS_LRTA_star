@@ -40,7 +40,7 @@ class Vertices:
         return len(self.list)
 
 
-def heuristic(p: (int, int), q: (int, int)) -> float:
+def heuristic_8N(p: (int, int), q: (int, int)) -> float:
     """
     Helper function to compute distance between two points.
     :param p: (x,y)
@@ -48,6 +48,16 @@ def heuristic(p: (int, int), q: (int, int)) -> float:
     :return: manhattan distance
     """
     return math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
+
+
+def heuristic_4N(p: (int, int), q: (int, int)) -> float:
+    """
+    Helper function to compute distance between two points.
+    :param p: (x,y)
+    :param q: (x,y)
+    :return: manhattan distance
+    """
+    return abs(p[0] - q[0]) + abs(p[1] - q[1])
 
 
 def get_movements_4n(x: int, y: int) -> List:
