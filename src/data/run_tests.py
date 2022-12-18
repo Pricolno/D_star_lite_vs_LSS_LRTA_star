@@ -1,5 +1,7 @@
+import random
 from math import floor
 from typing import List, Callable
+import numpy as np
 
 from src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
 from src.Dijkstra.run_dijkstra import RunDijkstra
@@ -61,9 +63,8 @@ class RunTests:
 
         list_tests = []
         n = len(list_of_all_tests)
-        min_ind = floor(n * prob_l) + offset
-
-        max_ind = floor(n * prob_r)
+        min_ind = floor((n - 1) * prob_l) + offset
+        max_ind = floor((n - 1) * prob_r)
         assert (0 <= min_ind <= max_ind < n)
 
         while count_of_tests > len(list_tests):
@@ -74,3 +75,25 @@ class RunTests:
                     break
 
         return list_tests
+
+    def select_tests_by_random(self, list_of_all_tests: List[SampleTest] = None,
+                               count_of_tests: int = 5,
+                               seed: int = 1378,
+                               prob_l: float = 0.0, prob_r: float = 1.0,
+                               offset: int = 0) -> List[SampleTest]:
+        if list_of_all_tests is None:
+            list_of_all_tests = self.list_sample_tests
+        random.seed(seed)
+        n = len(list_of_all_tests)
+        min_ind = floor((n - 1) * prob_l) + offset
+        max_ind = floor((n - 1) * prob_r)
+        assert (0 <= min_ind <= max_ind < n)
+
+        inds = np.random.randint(min_ind, max_ind, size=count_of_tests)
+
+        list_tests = []
+        for ind in inds:
+            list_tests.append(list_of_all_tests[ind])
+
+        return list_tests
+
