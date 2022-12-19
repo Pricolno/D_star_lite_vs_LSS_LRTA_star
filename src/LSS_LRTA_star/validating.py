@@ -3,9 +3,9 @@ from random import randint
 import numpy as np
 import pandas as pd
 
-from drawing import draw_dynamic
-from grid_map import Map
-from search import Node
+from src.LSS_LRTA_star.drawing import draw_dynamic
+from src.LSS_LRTA_star.grid_map import Map
+from src.LSS_LRTA_star.search import Node
 from src.LSS_LRTA_star.lss_lrta import lss_lrta_star, make_path
 from src.data.run_tests import SampleTest
 from src.statistics_tools.statistics_methods import Statistic

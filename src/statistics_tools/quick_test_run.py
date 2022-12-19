@@ -1,4 +1,9 @@
 # reading maps and scenes
+from typing import Callable
+
+from src.LSS_LRTA_star.lss_lrta import manhattan_distance
+from src.LSS_LRTA_star.search import SearchTreePQS
+from src.LSS_LRTA_star.validating import TestLSSLRTAstar
 from src.data.read_maps_info import ReadMapsInfo
 
 # struct for general test
@@ -45,6 +50,16 @@ class QuickTestRun:
                                                               )
 
         self.run_tests.load_search_func(search_func)
+
+    def load_lss_lrta_star(self,
+                           heuristic_func=manhattan_distance,
+                           search_tree=SearchTreePQS,
+                           lookahead=None, view_range=None):
+
+        run_test_lss_lrta_star = TestLSSLRTAstar(
+            heuristic_func, search_tree, lookahead, view_range).get_procedure(in_frame=False)
+
+        self.run_tests.load_search_func(run_test_lss_lrta_star)
 
     def select_tests_random(self,
                             count_of_tests=2,

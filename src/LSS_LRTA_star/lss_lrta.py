@@ -2,7 +2,7 @@ import copy
 import numpy as np
 import pandas as pd
 
-from search import Node
+from src.LSS_LRTA_star.search import Node
 from src.LSS_LRTA_star.grid_map import Map
 from src.data.run_tests import SampleTest
 from src.statistics_tools.statistics_methods import Statistic

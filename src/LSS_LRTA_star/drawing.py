@@ -7,8 +7,8 @@ from IPython.display import Image as Img
 from IPython.display import display
 from matplotlib import pyplot as plt, animation
 
-from lss_lrta import make_path
-from search import Node
+from src.LSS_LRTA_star.lss_lrta import make_path
+from src.LSS_LRTA_star.search import Node
 
 
 def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_trajectories'):

@@ -207,7 +207,7 @@ class RunDStarLite:
             # drive gui
             self.gui.run_game(path=path, auto_play=True)
 
-    def run_without_gui(self) -> Statistic | None:
+    def run_without_gui(self) -> Statistic:
         self.restart_all()
 
         stat = Statistic()
@@ -289,7 +289,7 @@ class RunDStarLite:
     def run_test(self, sample_test: SampleTest,
                  gui: bool = False,
                  delay_for_every_step=50,
-                 **kwargs) -> Statistic | None:
+                 **kwargs) -> Statistic:
         self.load_start_goal(sample_test.start,
                              sample_test.goal)
         # maybe don`t need change ogrid

@@ -11,9 +11,6 @@ from src.data.sample_test import SampleTest
 # from statistics_tools.statistics_methods import Statistic, FactoryStatistics
 
 
-
-
-
 class RunTests:
     def __init__(self):
         self.search_func = None
