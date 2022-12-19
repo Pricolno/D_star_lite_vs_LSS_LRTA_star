@@ -34,7 +34,7 @@ def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_t
 
     for path_flag, last_node_tuple, start_dijkstra, stat_values, stat_objects in search_logs:
         real_last_node, last_node = last_node_tuple
-        expansions, transitions_computed, nodes_created = stat_values
+        expansions, nodes_created = stat_values
         nodes_opened, nodes_expanded, edges_evaluated, new_viewed_obstacles = stat_objects
 
         # viewed_obstacles += new_viewed_obstacles
@@ -44,15 +44,13 @@ def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_t
             abs_length += real_path_[1]
             abs_nodes_created += nodes_created
             abs_expansions += expansions
-            abs_transitions_computed += transitions_computed
             message = 'Success'
             if last_node != real_last_node:
                 message = 'Obstacle'
             print(
                 f"{message}! Length: {round(real_path_[1], 3)}."
                 f" Nodes created: {nodes_created}."
-                f" Number of expansions: {expansions}."
-                f" Transitions computed: {transitions_computed}.")
+                f" Number of expansions: {expansions}.")
         else:
             print("Path not found!")
             return
@@ -123,13 +121,6 @@ def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_t
                     draw.rectangle((start_dijkstra.j * k, start_dijkstra.i * k, (start_dijkstra.j + 1) * k - 1,
                                     (start_dijkstra.i + 1) * k - 1), fill=(139, 69, 19), width=0)
                 '''
-                '''
-                # draw evaluated edges
-                if edges_evaluated is not None:
-                    for edge in edges_evaluated.keys():
-                        draw.line(((edge[1] + 0.5) * k, (edge[0] + 0.5) * k, (edge[3] + 0.5) * k, (edge[2] + 0.5) * k),
-                                  fill=((0, 0, 0) if edges_evaluated[edge] else (200, 200, 200)), width=2)
-                '''
                 # draw agent
                 curr_node = real_path[step_number]
                 next_node = real_path[min(real_pathlen - 1, step_number + min(n, 1))]
@@ -156,17 +147,16 @@ def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_t
         print(
             f"Path found! Length: {abs_length}."
             f" Nodes created: {abs_nodes_created}. "
-            f"Number of expansions: {abs_expansions}. "
-            f"Transitions computed: {abs_transitions_computed}.")
+            f"Number of expansions: {abs_expansions}.")
     else:
         print("Path not found!")
-
     #images[0].save('./' + output_filename + '.png', save_all=True, append_images=images[1:], optimize=False,
     #               duration=300 / quality, loop=0)
     #display(Img(filename='./' + output_filename + '.png'))
+
     images[0].save('./' + output_filename + '.gif', save_all=True, append_images=images[1:], optimize=True,
-                   duration=600 / quality, loop=0)
-    # 120
+                   duration=300 / quality, loop=0) # minimal quality = 120
+
 
 
 

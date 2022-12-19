@@ -1,6 +1,11 @@
 import copy
 import numpy as np
+import pandas as pd
+
 from search import Node
+from src.LSS_LRTA_star.grid_map import Map
+from src.data.run_tests import SampleTest
+from src.statistics_tools.statistics_methods import Statistic
 
 
 def manhattan_distance(i1, j1, i2, j2):
@@ -129,23 +134,19 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func
             else:
                 break
         start_i, start_j = real_last_node.i, real_last_node.j
-
         # get statistic
         stat_values = (search_tree_log.expansions,
-                       search_tree_log.transitions_computed,
                        len(search_tree_log))
         stat_objects = (search_tree_log.OPEN,
                         search_tree_log.CLOSED,
                         search_tree_log.EDGES,
                         viewed_obstacles)
-
         # dijkstra procedure
         a_closed = copy.copy(search_tree_log.CLOSED)
         if search_tree_log.open_is_empty():
             return results
         dijkstra_start = search_tree_log.choose_best_h_node_from_open_with(cur_node=last_node)
         dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree)
-
         '''
         print('h-hash_map: ', grid_map_ptr[0]._upgraded_h)
         print('last_node: ', last_node)
@@ -153,9 +154,11 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func
         print('open: ', *search_tree_log.OPEN)
         print('closed: ', *search_tree_log.CLOSED)
         '''
-
         # add new results
         results.append((path_flag, (real_last_node, last_node), dijkstra_start, stat_values, stat_objects))
 
     return results
+
+
+
 

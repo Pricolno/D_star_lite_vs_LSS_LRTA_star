@@ -40,6 +40,12 @@ class Map:
         if i != height:
             raise Exception("Size Error. Map height = ", i, ", but must be", height)
 
+    def read_from_cells(self, cells):
+        self._width, self._height = len(cells[0]), len(cells)
+        self._cells = cells
+        self._vcells = [[0 for _ in range(self._width)]
+                        for _ in range(self._height)]
+
     def read_from_file(self, file_name, width, height):
         self._width = width
         self._height = height
