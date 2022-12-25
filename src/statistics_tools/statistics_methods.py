@@ -1,3 +1,7 @@
+import pandas as pd
+import pickle
+
+
 class Statistic:
     name_of_statistics = [
         "Cell_expansions",
@@ -67,3 +71,24 @@ class FactoryStatistics:
 
     def get_stats(self):
         return self.stats
+
+    def get_DataFrame(self) -> pd.DataFrame:
+        df = pd.DataFrame.from_dict(self.get_stats())
+        return df
+
+    def save_stats(self, name_file='saved_stats', path_to_file='calcutated_stats', verbose=False):
+        full_path_to_file = path_to_file + '/' + name_file + '.pickle'
+        pickle.dump(self, file=open(full_path_to_file, "wb"))
+        if verbose:
+            print(f"Statistics is saved in {full_path_to_file}")
+
+    @classmethod
+    def load_stats(cls, name_file='saved_stats', path_to_file='calcutated_stats', verbose=False):
+        full_path_to_file = path_to_file + '/' + name_file + '.pickle'
+        factor_stats = pickle.load(open(full_path_to_file, "rb"))
+        if verbose:
+            print(f"Statistics is loaded from {full_path_to_file}")
+        return factor_stats
+
+
+
