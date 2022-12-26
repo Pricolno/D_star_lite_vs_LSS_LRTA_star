@@ -43,7 +43,7 @@ if "__main__" == __name__:
     run_d_star_lite.load_map_cells(cur_cells)
 
     # create search_func:Dstar_lite (soon will be LSS_LRTA_star)
-    search_func = run_d_star_lite.create_search_func(gui=False,
+    search_func = run_d_star_lite.create_search_func(gui=True,
                                                      delay_for_every_step=10,
                                                      #exploration_setting='4N',
                                                      # view_range=4,

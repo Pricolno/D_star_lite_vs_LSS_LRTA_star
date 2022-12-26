@@ -2,7 +2,7 @@ from lss_lrta import lss_lrta_star, manhattan_distance
 from search import SearchTreePQS
 from src.data.read_maps_info import ReadMapsInfo
 from src.data.run_tests import SampleTest, RunTests
-from validating import simple_test, hard_test, toy_test, base_test, super_test, TestLSSLRTAstar
+from validating import simple_test, toy_test, base_test, super_test, TestLSSLRTAstar
 
 LIST_PATH_TO_FILE_MAP = ["den011d.map/den011d.map",
                          "street-map/Berlin_0_256.map",
@@ -14,12 +14,12 @@ LIST_PATH_TO_FILE_SCENES = ["den011d.map-scen/den011d.map.scen",
 
 
 if __name__ == '__main__':
-    # res = simple_test(lss_lrta_star, 1, manhattan_distance, SearchTreePQS, 10)
-    # res = hard_test(lss_lrta_star, 1, manhattan_distance, SearchTreePQS, 20)
+    res = simple_test(lss_lrta_star, manhattan_distance, SearchTreePQS, 10, task=4, map_type=1)
     # res = toy_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 100)
     # res = base_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 3)
     #res = simple_test(lss_lrta_star, 1, manhattan_distance, SearchTreePQS, 10)
 
+    '''
     read_maps_info = ReadMapsInfo()
     cur_cells = read_maps_info.read_map_from_file(
         path_to_file_map=LIST_PATH_TO_FILE_MAP[0])
@@ -30,18 +30,6 @@ if __name__ == '__main__':
         list_scenes=list_scenes,
         label='Name_of_group_test')
 
-    #sample_test = list_all_tests[3]
-    #res_ = super_test(lss_lrta_star, sample_test, manhattan_distance, SearchTreePQS, 10)
-
-    '''
-    run_tests_lss_lrta_star = TestLSSLRTAstar(
-        manhattan_distance, SearchTreePQS, lookahead=10, view_range=3
-        ).get_vectorized_procedure()
-    res = run_tests_lss_lrta_star(list_all_tests[0:100])
-    print(res)
-    '''
-
-    ################################################
     run_test_lss_lrta_star = TestLSSLRTAstar(
         manhattan_distance, SearchTreePQS, lookahead=10, view_range=3
         ).get_procedure(in_frame=False)
@@ -61,5 +49,6 @@ if __name__ == '__main__':
         list_sample_tests=selected_tests)
 
     print(factor_stats.get_stats())
+    '''
 
 

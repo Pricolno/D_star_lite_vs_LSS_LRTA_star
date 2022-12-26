@@ -63,7 +63,8 @@ def launch_number_old():
         lookahead=0,
         view_range=10)
 
-    Quick_Test_Run.select_tests_random(count_of_tests=2,
+
+    Quick_Test_Run.select_tests_random(count_of_tests=5,
                                        prob_l=0.5, prob_r=0.6,
                                        seed=1332)
     factor_stats = Quick_Test_Run.run_all_test()
