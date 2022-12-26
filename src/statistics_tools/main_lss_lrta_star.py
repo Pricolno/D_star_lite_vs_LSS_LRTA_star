@@ -31,22 +31,21 @@ LIST_PATH_TO_DIR_SCENES = ["../data/movingai_data/maze-scen",
                            ]
 
 
-def launch_test(name_file=None):
-    # name_saved_file = f'LSS_LRTA_star_random_obstacles_lookahead_eq_inf_max_count_10'
-    name_saved_file = "TEST_GG"
+def launch_test(name_file=None, lookahead=1, view_range=1, max_count_map=250//5):
+    name_saved_file = f'LSS_LRTA_star_random_obstacles_lookahead_eq_{lookahead}_view_range_{view_range}_max_count_{max_count_map}'
 
     Quick_Test_Run = QuickTestRun()
     Quick_Test_Run.load_lss_lrta_star(
         heuristic_func=manhattan_distance,
         search_tree=SearchTreePQS,
-        lookahead=0,
-        view_range=10)
+        lookahead=lookahead,
+        view_range=view_range)
     path_to_dir_maps = LIST_PATH_TO_DIR_MAPS[1]
     path_to_dir_scenes = LIST_PATH_TO_DIR_SCENES[1]
 
     factor_stats = Quick_Test_Run.run_all_test_for_all_maps(path_to_dir_maps=path_to_dir_maps,
                                                             path_to_dir_scenes=path_to_dir_scenes,
-                                                            max_count_map=6,
+                                                            max_count_map=max_count_map,
                                                             restart=False,
                                                             name_saved_file=name_saved_file)
     print(f"Calculate stats on {factor_stats.count_of_maps} maps")
