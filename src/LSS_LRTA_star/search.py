@@ -47,6 +47,7 @@ class Node:
         Comparison between self and other. Returns is self < other (self has higher priority).
         """
         return self.f < other.f or ((self.f == other.f) and (self.h < other.h))
+        # TODO: try different tie-breaks: h-max and h-min
 
     def __str__(self):
         return f'[({self.i}, {self.j}):g={self.g}, h={self.h}, f={self.f}]'

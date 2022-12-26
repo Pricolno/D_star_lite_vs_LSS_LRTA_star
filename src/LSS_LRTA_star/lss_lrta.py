@@ -1,4 +1,6 @@
 import copy
+from time import time
+
 import numpy as np
 import pandas as pd
 
@@ -10,6 +12,10 @@ from src.statistics_tools.statistics_methods import Statistic
 
 def manhattan_distance(i1, j1, i2, j2):
     return abs(i1 - i2) + abs(j1 - j2)
+
+
+def chebyshev_distance(i1, j1, i2, j2):
+    return max(abs(i1 - i2), abs(j1 - j2))
 
 
 def compute_cost(i1, j1, i2, j2):
@@ -107,12 +113,16 @@ def dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree=None):
     return
 
 
-def lss_lrta_star(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func=None, search_tree=None,
+def lss_lrta_star(grid_map_ptr, start_i, start_j,
+                  goal_i, goal_j,
+                  heuristic_func=None,
+                  search_tree=None,
                   lookahead=0):
     results = []
     init_obst = grid_map_ptr[0].set_local_observations(start_i, start_j)
 
     while (start_i, start_j) != (goal_i, goal_j):
+        timer = time()
         path_flag, last_node, search_tree_log = astar(
             grid_map_ptr,
             start_i, start_j,
@@ -134,13 +144,6 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func
             else:
                 break
         start_i, start_j = real_last_node.i, real_last_node.j
-        # get statistic
-        stat_values = (search_tree_log.expansions,
-                       len(search_tree_log))
-        stat_objects = (search_tree_log.OPEN,
-                        search_tree_log.CLOSED,
-                        search_tree_log.EDGES,
-                        viewed_obstacles)
         # dijkstra procedure
         a_closed = copy.copy(search_tree_log.CLOSED)
         if search_tree_log.open_is_empty():
@@ -148,18 +151,15 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func
         dijkstra_start = search_tree_log.choose_best_h_node_from_open_with(cur_node=None)
         # TODO: cur_node is last_node?
         dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree)
-        '''
-        print('h-hash_map: ', grid_map_ptr[0]._upgraded_h)
-        print('last_node: ', last_node)
-        print('dijkstra: ', dijkstra_start)
-        print('open: ', *search_tree_log.OPEN)
-        print('closed: ', *search_tree_log.CLOSED)
-        '''
         # add new results
+        time_per_search = time() - timer
+        stat_values = (search_tree_log.expansions,
+                       len(search_tree_log),
+                       time_per_search)
+        stat_objects = (search_tree_log.OPEN,
+                        search_tree_log.CLOSED,
+                        search_tree_log.EDGES,
+                        viewed_obstacles)
         results.append((path_flag, (real_last_node, last_node), dijkstra_start, stat_values, stat_objects))
 
     return results
-
-
-
-

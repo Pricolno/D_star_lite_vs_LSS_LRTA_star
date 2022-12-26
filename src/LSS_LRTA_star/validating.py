@@ -16,11 +16,12 @@ def simple_test(search_func,
                 search_tree,
                 lookahead,
                 view_range=2,
+                map_type=0,
                 task=1,
                 output_filename='animated_trajectories'):
     height = 15
     width = 30
-    map_str = '''
+    map_strs = ['''
 . . . # # . . . . . . . . # # . . . # . . # # . . . . . . .  
 . . . # # # # # . . # . . # # . . . . . . # # . . . . . . . 
 . . . . . . . # . . # . . # # . . . # . . # # . . . . . . . 
@@ -36,7 +37,26 @@ def simple_test(search_func,
 . . . # # . . . . . . . . # # . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . # # . . . . . . . . # # . . . . . . . . . . . . . . .
+''',
+                '''
+. . . # # . . . . . . . . # # . . . # . . # # . . . . . . .  
+. . . # # # # # . . # . . # # . . . . . . # # . . . . . . . 
+. . . # . . . # . . # . . # # . . . # . . # # . . . . . . . 
+. . . # # . . # . . # . . # # . . . # . . # # . . . . . . . 
+. . . # # . . # . . # . . # # . . . # . . # # . . . . . . . 
+. . . # # . . # . . # . . # # . . . # . . # # # # # . . . . 
+. . . # # . . # . . # . . # # . . . # . . # # # # # . . . . 
+. . . # . . . # . . # . . # # . . . # . . # . . . . . . . . 
+. . . # # . . # . . # . . # # . . . # . . # . . . . . . . . 
+. . . # # . . # . . # . . # # . . . # . . # . . . . . . . . 
+. . . # # . . . . . # . . . . . . . # . . . . . . . . . . . 
+. . . # # # # # # # # # # # # # . # # . # # # # # # # . # # 
+. . . # # . . . . . . . . # # . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . # # . . . . . . . . # # . . . . . . . . . . . . . . .
 '''
+                ]
+    map_str = map_strs[map_type]
 
     task_map = Map(view_range)
     task_map.read_from_string(map_str, width, height)
@@ -60,51 +80,6 @@ def simple_test(search_func,
                               search_tree,
                               lookahead)
         draw_dynamic(task_map, start, goal, results, output_filename=output_filename)
-        return results
-
-    except Exception as e:
-        print("Execution error")
-        print(e)
-
-
-def hard_test(search_func, task, *args):
-    height = 15
-    width = 30
-    map_str = '''
-. . . # # . . . . . . . . # # . . . # . . # # . . . . . . .  
-. . . # # # # # . . # . . # # . . . . . . # # . . . . . . . 
-. . . # . . . # . . # . . # # . . . # . . # # . . . . . . . 
-. . . # # . . # . . # . . # # . . . # . . # # . . . . . . . 
-. . . # # . . # . . # . . # # . . . # . . # # . . . . . . . 
-. . . # # . . # . . # . . # # . . . # . . # # # # # . . . . 
-. . . # # . . # . . # . . # # . . . # . . # # # # # . . . . 
-. . . # . . . # . . # . . # # . . . # . . # . . . . . . . . 
-. . . # # . . # . . # . . # # . . . # . . # . . . . . . . . 
-. . . # # . . # . . # . . # # . . . # . . # . . . . . . . . 
-. . . # # . . . . . # . . . . . . . # . . . . . . . . . . . 
-. . . # # # # # # # # # # # # # . # # . # # # # # # # . # # 
-. . . # # . . . . . . . . # # . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . # # . . . . . . . . # # . . . . . . . . . . . . . . .
-'''
-
-    task_map = Map(view_range=1)
-    task_map.read_from_string(map_str, width, height)
-
-    starts = [(1, 28), (2, 29), (3, 20), (3, 20), (0, 0)]
-    goals = [(0, 1), (6, 2), (5, 6), (13, 0), (4, 23)]
-
-    lengths = [54, 47, 48, 38, 56]
-
-    if (task is None) or not (0 <= task < 5):
-        task = randint(0, 4)
-
-    start = Node(*starts[task])
-    goal = Node(*goals[task])
-    length = lengths[task]
-    try:
-        results = search_func([task_map], start.i, start.j, goal.i, goal.j, *args)
-        draw_dynamic(task_map, start, goal, results)
         return results
 
     except Exception as e:
@@ -210,7 +185,7 @@ class TestLSSLRTAstar:
             result_frame = pd.DataFrame(np.array(
                 [[*last_node_tuple, *stat_values]
                  for path_flag, last_node_tuple, start_dijkstra, stat_values, stat_objects in results]),
-                columns=['Actual goal', 'Dummy goal', 'Expansions', 'Created'])
+                columns=['Actual goal', 'Dummy goal', 'Expansions', 'Created', 'Search_time_per_search'])
 
             searches, _ = result_frame.shape
             assert result_frame['Actual goal'][searches - 1] == goal
@@ -225,7 +200,9 @@ class TestLSSLRTAstar:
             return Statistic(Cell_expansions=result_frame['Expansions'].sum(),
                              Searchesc=result_frame.shape[0],
                              Trajectory_length=result_frame['Actual pathlen'].sum(),
-                             Trajectory_length_per_search=result_frame['Actual pathlen'].mean())
+                             Trajectory_length_per_search=result_frame['Actual pathlen'].mean(),
+                             Search_time=result_frame['Search_time_per_search'].sum(),
+                             Search_time_per_search=result_frame['Search_time_per_search'].mean())
 
         if in_frame:
             return test_lss_lrta_star
