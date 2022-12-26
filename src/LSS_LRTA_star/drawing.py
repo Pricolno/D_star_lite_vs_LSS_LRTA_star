@@ -150,16 +150,12 @@ def draw_dynamic(grid_map, start, goal, search_logs, output_filename='animated_t
             f"Number of expansions: {abs_expansions}.")
     else:
         print("Path not found!")
-    #images[0].save('./' + output_filename + '.png', save_all=True, append_images=images[1:], optimize=False,
-    #               duration=300 / quality, loop=0)
-    #display(Img(filename='./' + output_filename + '.png'))
 
-    images[0].save('./' + output_filename + '.gif', save_all=True, append_images=images[1:], optimize=True,
-                   duration=300 / quality, loop=0) # minimal quality = 120
-
-
-
-
-
-
-
+    if output_filename:
+        images[0].save('./' + output_filename + '.gif', save_all=True, append_images=images[1:], optimize=True,
+                       duration=300 / quality, loop=0)  # minimal quality = 120
+    else:
+        output_filename = 'tmp_animation'
+        images[0].save('./' + output_filename + '.png', save_all=True, append_images=images[1:], optimize=False,
+                       duration=300 / quality, loop=0)
+        display(Img(filename='./' + output_filename + '.png'))
