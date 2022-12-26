@@ -15,7 +15,7 @@ from src.data.sample_test import SampleTest
 class RunTests:
     def __init__(self):
         self.count_of_maps = None
-        self.all_count_of_tests = None
+        self.all_count_of_tests = 0
         self.search_func = None
         self.list_sample_tests = None
 
@@ -27,8 +27,8 @@ class RunTests:
 
     def run_test(self, sample_test: SampleTest) -> Statistic:
         run_dij = RunDijkstra()
-        optimal_length = run_dij.run_dijkstra_on_test(sample_test)
-        # print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length}")
+        path, optimal_length = run_dij.run_dijkstra_on_test(sample_test)
+        print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length} | path={path}")
         # print(sample_test.cells[0])
         if optimal_length is None:
             print(f"No exists path sample_test={sample_test}")
@@ -51,6 +51,7 @@ class RunTests:
         # print(f"RunTests.run_all_test: len(list_sample_tests)={len(list_sample_tests)} {len(list_sample_tests[0])}")
         for number, sample_test in enumerate(list_sample_tests):
             print(f"Start run test №{number}  |  all_count_of_tests={self.all_count_of_tests} | count_of_maps={self.count_of_maps}")
+
             self.all_count_of_tests += 1
 
             stat = self.run_test(sample_test)
