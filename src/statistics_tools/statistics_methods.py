@@ -73,7 +73,6 @@ class FactoryStatistics:
         for stat in factory_stats.get_stats():
             self.stats[stat].extend(factory_stats.get_stats()[stat])
 
-
     def get_stats(self):
         return self.stats
 
@@ -94,6 +93,3 @@ class FactoryStatistics:
         if verbose:
             print(f"Statistics is loaded from {full_path_to_file}")
         return factor_stats
-
-
-

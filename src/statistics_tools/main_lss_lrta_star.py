@@ -42,11 +42,13 @@ def launch_number1():
     path_to_dir_scenes = LIST_PATH_TO_DIR_SCENES[1]
 
     factor_stats = Quick_Test_Run.run_all_test_for_all_maps(path_to_dir_maps=path_to_dir_maps,
-                                                            path_to_dir_scenes=path_to_dir_scenes)
+                                                            path_to_dir_scenes=path_to_dir_scenes,
+                                                            max_count_map=10)
 
-    factor_stats.save_stats(name_file=f'LSS_LRTA_star_launch_number1_', verbose=True)
+    factor_stats.save_stats(name_file=f'LSS_LRTA_star_random_obstacles_lookahead_eq_inf_max_count_10', verbose=True)
 
     return factor_stats
+
 
 def launch_number_old():
     Quick_Test_Run = QuickTestRun()
@@ -61,8 +63,7 @@ def launch_number_old():
         heuristic_func=manhattan_distance,
         search_tree=SearchTreePQS,
         lookahead=0,
-        view_range=10)
-
+        view_range=1)
 
     Quick_Test_Run.select_tests_random(count_of_tests=5,
                                        prob_l=0.5, prob_r=0.6,
@@ -70,7 +71,7 @@ def launch_number_old():
     factor_stats = Quick_Test_Run.run_all_test()
     pprint(factor_stats.get_stats())
 
-    factor_stats.save_stats(name_file='LSS_LRTA_star_random', verbose=True)
+    factor_stats.save_stats(name_file='LSS_LRTA_star_random_obstacles_lookahead_eq_inf', verbose=True)
     # factor_stats = FactoryStatistics.load_stats(name_file="LSS_LRTA_star_random", verbose=True)
     # pprint(factor_stats.get_DataFrame())
 
@@ -82,4 +83,3 @@ if __name__ == '__main__':
     factor_stats = launch_number1()
     pprint(factor_stats.get_stats())
     exit()
-

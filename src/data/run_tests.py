@@ -14,6 +14,8 @@ from src.data.sample_test import SampleTest
 
 class RunTests:
     def __init__(self):
+        self.count_of_maps = None
+        self.all_count_of_tests = None
         self.search_func = None
         self.list_sample_tests = None
 
@@ -48,7 +50,9 @@ class RunTests:
 
         # print(f"RunTests.run_all_test: len(list_sample_tests)={len(list_sample_tests)} {len(list_sample_tests[0])}")
         for number, sample_test in enumerate(list_sample_tests):
-            print(f"Start run test №{number}")
+            print(f"Start run test №{number}  |  all_count_of_tests={self.all_count_of_tests} | count_of_maps={self.count_of_maps}")
+            self.all_count_of_tests += 1
+
             stat = self.run_test(sample_test)
 
             factory_statistics.add_stat(stat)

@@ -2,6 +2,8 @@
 from typing import Callable
 import os
 
+import numpy as np
+
 from src.LSS_LRTA_star.lss_lrta import manhattan_distance
 from src.LSS_LRTA_star.search import SearchTreePQS
 from src.LSS_LRTA_star.validating import TestLSSLRTAstar
@@ -97,15 +99,21 @@ class QuickTestRun:
 
     def run_all_test_for_all_maps(self,
                                   path_to_dir_maps: str = None,
-                                  path_to_dir_scenes: str = None) -> FactoryStatistics:
+                                  path_to_dir_scenes: str = None,
+                                  max_count_map: int = np.inf) -> FactoryStatistics:
         # path_to_dir_maps = "../data/our_data/random_obstacles.map"
         # path_to_dir_scene = "../data/our_data/random_obstacles.map-scen"
 
         # print(os.listdir(path_to_dir_maps))
         # print(os.listdir(path_to_dir_scenes))
-
+        self.run_tests.all_count_of_tests = 0
+        self.run_tests.count_of_maps = 0
         res_factory_stats = FactoryStatistics()
-        for cur_name_map, cur_name_scenes in zip(os.listdir(path_to_dir_maps), os.listdir(path_to_dir_scenes)):
+        for number_map, (cur_name_map, cur_name_scenes) in enumerate(zip(os.listdir(path_to_dir_maps), os.listdir(path_to_dir_scenes))):
+            if number_map == max_count_map:
+                break
+            self.run_tests.count_of_maps += 1
+
             full_path_to_file_map = path_to_dir_maps + '/' + cur_name_map
             full_path_to_file_scenes = path_to_dir_scenes + '/' + cur_name_scenes
             self.read_data_from_files(full_path_to_file_map=full_path_to_file_map,
@@ -113,5 +121,6 @@ class QuickTestRun:
 
             cur_factory_stats = self.run_all_test()
             res_factory_stats.append_factory_stats(cur_factory_stats)
+
 
         return res_factory_stats
