@@ -69,8 +69,6 @@ def save_scenes_for_all_maps(list_random_maps, list_names_of_maps):
                                         name_file_scenes=name_of_maps)
 
 
-
-
 def save_list_of_scenes_to_movingAi(list_scenes, name_file_scenes):
     str_version = "version__0\n"
     list_str_scenes = []
@@ -81,8 +79,7 @@ def save_list_of_scenes_to_movingAi(list_scenes, name_file_scenes):
 
     str_res = ''.join([str_version, *list_str_scenes])
 
-    full_path_to_file = PATH_TO_SCENE + '/' + name_file_scenes + '.scene'
-
+    full_path_to_file = PATH_TO_SCENE + '/' + name_file_scenes + '.scen'
 
     with open(full_path_to_file, "a") as file_scenes:
         file_scenes.write(str_res)
@@ -96,4 +93,4 @@ if __name__ == "__main__":
 
     list_scenes = create_list_random_scene(map01)
     save_list_of_scenes_to_movingAi(list_scenes, name_file_scenes="random0")
-    #print(list_scenes[1])
+    # print(list_scenes[1])

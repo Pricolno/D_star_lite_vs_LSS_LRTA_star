@@ -56,4 +56,4 @@ def clear_all():
 if __name__ == "__main__":
     generate_data(verbose=True)
 
-    # clear_all()
+    #clear_all()

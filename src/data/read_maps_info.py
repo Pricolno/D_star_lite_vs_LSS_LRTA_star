@@ -49,7 +49,8 @@ class ReadMapsInfo:
             path_to_file_scenes = self.path_to_file_scenes
         return self.path_to_dir_data + '\\' + path_to_file_scenes
 
-    def read_map_from_file(self, path_to_file_map: str = None) -> List[List[int]]:
+    def read_map_from_file(self, path_to_file_map: str = None,
+                           full_path_to_file_map: str = None) -> List[List[int]]:
         """
         Reads map.
         """
@@ -59,7 +60,9 @@ class ReadMapsInfo:
             pass
         if path_to_file_map is None:
             path_to_file_map = self.path_to_file_map
-        full_path_to_file_map = self.get_full_path_to_file_map(path_to_file_map=path_to_file_map)
+
+        if full_path_to_file_map is None:
+            full_path_to_file_map = self.get_full_path_to_file_map(path_to_file_map=path_to_file_map)
 
         map_file = open(full_path_to_file_map)
         # unless
@@ -129,7 +132,8 @@ class ReadMapsInfo:
 
         return cells
 
-    def read_scenes_from_file(self, path_to_file_scenes: str = None) -> List[Scene]:
+    def read_scenes_from_file(self, path_to_file_scenes: str = None,
+                              full_path_to_file_scenes=None) -> List[Scene]:
         """
         return: hard_lvl, map_file, height, width, start_i, start_j, goal_i, goal_j, optimal_length
         """
@@ -139,7 +143,9 @@ class ReadMapsInfo:
             pass
         if path_to_file_scenes is None:
             path_to_file_scenes = self.path_to_file_scenes
-        full_path_to_file_scenes = self.get_full_path_to_file_scenes(path_to_file_scenes=path_to_file_scenes)
+
+        if full_path_to_file_scenes is None:
+            full_path_to_file_scenes = self.get_full_path_to_file_scenes(path_to_file_scenes=path_to_file_scenes)
 
         scenes_file = open(full_path_to_file_scenes)
         version = scenes_file.readline()
