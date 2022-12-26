@@ -7,7 +7,7 @@ from config import N, M, COUNT_OF_MAPS, PATH_TO_MAP, NAME_FILE
 
 #N, M = 512, 512
 #COUNT_OF_MAPS = 1
-#PATH_TO_FILE = "../our_data/random.map"
+#PATH_TO_FILE = "../our_data/random_obstacles.map"
 #NAME_FILE = "random_map"
 
 
