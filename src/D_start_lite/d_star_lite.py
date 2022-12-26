@@ -148,7 +148,8 @@ class DStarLite:
                                 if min_s > temp:
                                     min_s = temp
                             self.rhs[s] = min_s
-                    self.update_vertex(u)
+                    #self.update_vertex(u)
+                    self.update_vertex(s)
 
     def rescan(self) -> Vertices:
 

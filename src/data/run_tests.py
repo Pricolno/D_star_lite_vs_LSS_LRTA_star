@@ -60,16 +60,28 @@ class RunTests:
 
         list_tests = []
         n = len(list_of_all_tests)
-        min_ind = floor((n - 1) * prob_l) + offset
+        min_ind = floor((n - 1) * prob_l)
         max_ind = floor((n - 1) * prob_r)
+
+        print(f"min_ind={min_ind} max_ind={max_ind}")
         assert (0 <= min_ind <= max_ind < n)
 
+        is_first_loop = True
         while count_of_tests > len(list_tests):
-            for cur_ind in range(min_ind, max_ind + 1):
+            cur_min_ind = min_ind
+            if not is_first_loop:
+                cur_min_ind = min_ind
+            if is_first_loop:
+                cur_min_ind = min_ind + offset
+                is_first_loop = False
+
+            for cur_ind in range(cur_min_ind, max_ind + 1):
                 list_tests.append(list_of_all_tests[cur_ind])
 
                 if len(list_tests) == count_of_tests:
                     break
+
+
 
         return list_tests
 
