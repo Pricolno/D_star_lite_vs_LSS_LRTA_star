@@ -9,11 +9,13 @@ from src.data.run_tests import SampleTest, RunTests
 # Dlite
 from src.D_start_lite.run_d_star_lite import RunDStarLite
 
-LIST_PATH_TO_FILE_MAP = ["den011d.map/den011d.map",
+LIST_PATH_TO_FILE_MAP = ["maze-map/maze512-1-0.map",
+                        "den011d.map/den011d.map",
                          "street-map/Berlin_0_256.map",
                          ReadMapsInfo.PATH_TO_FILE_MAP]
 
-LIST_PATH_TO_FILE_SCENES = ["den011d.map-scen/den011d.map.scen",
+LIST_PATH_TO_FILE_SCENES = ["maze-scen/maze512-1-0.map.scen",
+                            "den011d.map-scen/den011d.map.scen",
                             "street-scen/Berlin_0_256.map.scen",
                             ReadMapsInfo.PATH_TO_FILE_SCENES]
 
@@ -47,9 +49,9 @@ if "__main__" == __name__:
     run_tests.load_search_func(search_func)
 
     # select specific data from all data
-    select_small_data = run_tests.select_tests_in_bounds(prob_l=0.7, prob_r=0.8,
+    select_small_data = run_tests.select_tests_in_bounds(prob_l=0.1, prob_r=0.2,
                                                          count_of_tests=2,
-                                                         offset=2,
+                                                         offset=10,
                                                          )
 
     # launch testing and get stats by factor_stats
