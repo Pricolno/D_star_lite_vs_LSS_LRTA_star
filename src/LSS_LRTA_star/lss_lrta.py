@@ -131,6 +131,14 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j,
             search_tree,
             lookahead
         )
+        # dijkstra procedure
+        a_closed = copy.copy(search_tree_log.CLOSED)
+        if search_tree_log.open_is_empty():
+            return results
+        dijkstra_start = search_tree_log.choose_best_h_node_from_open_with(cur_node=None)
+        # TODO: cur_node is last_node?
+        dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree)
+
         # set viewed obstacles and find real last node
         viewed_obstacles = []
         real_last_node = last_node
@@ -144,13 +152,7 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j,
             else:
                 break
         start_i, start_j = real_last_node.i, real_last_node.j
-        # dijkstra procedure
-        a_closed = copy.copy(search_tree_log.CLOSED)
-        if search_tree_log.open_is_empty():
-            return results
-        dijkstra_start = search_tree_log.choose_best_h_node_from_open_with(cur_node=None)
-        # TODO: cur_node is last_node?
-        dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree)
+
         # add new results
         time_per_search = time() - timer
         stat_values = (search_tree_log.expansions,

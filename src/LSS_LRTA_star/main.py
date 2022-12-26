@@ -14,7 +14,7 @@ LIST_PATH_TO_FILE_SCENES = ["den011d.map-scen/den011d.map.scen",
 
 
 if __name__ == '__main__':
-    res = simple_test(lss_lrta_star, manhattan_distance, SearchTreePQS, 10, task=4, map_type=1)
+    res = simple_test(lss_lrta_star, manhattan_distance, SearchTreePQS, 15, task=1, map_type=1)
     # res = toy_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 100)
     # res = base_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 3)
     #res = simple_test(lss_lrta_star, 1, manhattan_distance, SearchTreePQS, 10)
