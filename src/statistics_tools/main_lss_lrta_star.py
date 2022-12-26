@@ -31,7 +31,10 @@ LIST_PATH_TO_DIR_SCENES = ["../data/movingai_data/maze-scen",
                            ]
 
 
-def launch_number1():
+def launch_test(name_file=None):
+    # name_saved_file = f'LSS_LRTA_star_random_obstacles_lookahead_eq_inf_max_count_10'
+    name_saved_file = "TEST_GG"
+
     Quick_Test_Run = QuickTestRun()
     Quick_Test_Run.load_lss_lrta_star(
         heuristic_func=manhattan_distance,
@@ -43,9 +46,11 @@ def launch_number1():
 
     factor_stats = Quick_Test_Run.run_all_test_for_all_maps(path_to_dir_maps=path_to_dir_maps,
                                                             path_to_dir_scenes=path_to_dir_scenes,
-                                                            max_count_map=10)
-
-    factor_stats.save_stats(name_file=f'LSS_LRTA_star_random_obstacles_lookahead_eq_inf_max_count_10', verbose=True)
+                                                            max_count_map=6,
+                                                            restart=False,
+                                                            name_saved_file=name_saved_file)
+    print(f"Calculate stats on {factor_stats.count_of_maps} maps")
+    # factor_stats.save_stats(name_file=name_saved_file, verbose=True)
 
     return factor_stats
 
@@ -80,6 +85,6 @@ def launch_number_old():
 
 if __name__ == '__main__':
     print("START MAIN LSS_LRTA_STAR")
-    factor_stats = launch_number1()
-    pprint(factor_stats.get_stats())
+    factor_stats = launch_test()
+    #pprint(factor_stats.get_stats())
     exit()

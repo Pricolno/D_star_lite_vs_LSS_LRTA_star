@@ -100,7 +100,9 @@ class QuickTestRun:
     def run_all_test_for_all_maps(self,
                                   path_to_dir_maps: str = None,
                                   path_to_dir_scenes: str = None,
-                                  max_count_map: int = np.inf) -> FactoryStatistics:
+                                  max_count_map: int = np.inf,
+                                  restart: bool = True,
+                                  name_saved_file=None) -> FactoryStatistics:
         # path_to_dir_maps = "../data/our_data/random_obstacles.map"
         # path_to_dir_scene = "../data/our_data/random_obstacles.map-scen"
 
@@ -108,11 +110,38 @@ class QuickTestRun:
         # print(os.listdir(path_to_dir_scenes))
         self.run_tests.all_count_of_tests = 0
         self.run_tests.count_of_maps = 0
-        res_factory_stats = FactoryStatistics()
-        for number_map, (cur_name_map, cur_name_scenes) in enumerate(zip(os.listdir(path_to_dir_maps), os.listdir(path_to_dir_scenes))):
-            if number_map == max_count_map:
+
+        res_factory_stats = None
+        if restart:
+            res_factory_stats = FactoryStatistics()
+            res_factory_stats.count_of_maps = 0
+            res_factory_stats.save_stats(name_file=name_saved_file,
+                                         verbose=True)
+        else:
+            if not FactoryStatistics.is_exist_file(name_file=name_saved_file):
+                res_factory_stats = FactoryStatistics()
+                res_factory_stats.save_stats(name_file=name_saved_file,
+                                             verbose=True)
+                print(f"QuickTestRun| run_all_test_for_all_maps | FILE is not exists | Begin with {res_factory_stats.count_of_maps} map")
+
+            else:
+                res_factory_stats = FactoryStatistics.load_stats(name_file=name_saved_file)
+                print(f"QuickTestRun| run_all_test_for_all_maps | FILE is exists | Begin with {res_factory_stats.count_of_maps} map")
+
+
+        self.run_tests.count_of_maps = res_factory_stats.count_of_maps
+
+        for number_map, (cur_name_map, cur_name_scenes) in enumerate(
+                zip(os.listdir(path_to_dir_maps), os.listdir(path_to_dir_scenes))):
+            if res_factory_stats.count_of_maps > number_map:
+                continue
+
+            if number_map >= max_count_map:
                 break
+
             self.run_tests.count_of_maps += 1
+            res_factory_stats.count_of_maps += 1
+            #
 
             full_path_to_file_map = path_to_dir_maps + '/' + cur_name_map
             full_path_to_file_scenes = path_to_dir_scenes + '/' + cur_name_scenes
@@ -122,5 +151,8 @@ class QuickTestRun:
             cur_factory_stats = self.run_all_test()
             res_factory_stats.append_factory_stats(cur_factory_stats)
 
+            # save prefix factory_stats
+            res_factory_stats.save_stats(name_file=name_saved_file,
+                                         verbose=True)
 
         return res_factory_stats

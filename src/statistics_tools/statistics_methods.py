@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import pickle
 
@@ -58,6 +60,7 @@ class FactoryStatistics:
             self.__setattr__(statistic, statistic)
 
         self.stats = {name_of_statistic: [] for name_of_statistic in Statistic.name_of_statistics}
+        self.count_of_maps = 0
 
     def clear_stats(self):
         self.stats = {name_of_statistic: [] for name_of_statistic in Statistic.name_of_statistics}
@@ -84,7 +87,7 @@ class FactoryStatistics:
         full_path_to_file = path_to_file + '/' + name_file + '.pickle'
         pickle.dump(self, file=open(full_path_to_file, "wb"))
         if verbose:
-            print(f"Statistics is saved in {full_path_to_file}")
+            print(f"Statistics is saved in {full_path_to_file} | count_of_maps={self.count_of_maps}")
 
     @classmethod
     def load_stats(cls, name_file='saved_stats', path_to_file='calcutated_stats', verbose=False):
@@ -93,3 +96,9 @@ class FactoryStatistics:
         if verbose:
             print(f"Statistics is loaded from {full_path_to_file}")
         return factor_stats
+
+    @classmethod
+    def is_exist_file(cls, name_file='saved_stats',
+                      path_to_file='calcutated_stats'):
+        full_path_to_file = path_to_file + '/' + name_file + '.pickle'
+        return os.path.exists(full_path_to_file)
