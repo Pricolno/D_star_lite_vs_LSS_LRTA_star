@@ -18,8 +18,11 @@ class Scene:
         self.hard_lvl = hard_lvl
         self.height = height
         self.width = width
-        self.start = start_j, start_i,
-        self.goal = goal_j, goal_i,
+        # self.start = start_j, start_i
+        self.start = start_i, start_j
+        # self.goal = goal_j, goal_i
+        self.goal = goal_i, goal_j,
+
         self.optimal_length = optimal_length
 
     def get_start_goal(self):

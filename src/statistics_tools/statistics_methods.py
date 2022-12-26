@@ -16,14 +16,14 @@ class Statistic:
         "Optimal_length"
     ]
 
-    def __init__(self, Cell_expansions=None,
-                 Searchesc=None,
-                 Trajectory_length=None,
-                 Trajectory_length_per_search=None,
-                 Search_time=None,
+    def __init__(self, Cell_expansions=0,
+                 Searchesc=0,
+                 Trajectory_length=0,
+                 Trajectory_length_per_search=0,
+                 Search_time=0,
                  Search_time_per_search=None,
                  Search_time_per_action=None,
-                 Optimal_length=None):
+                 Optimal_length=0):
 
         self.Cell_expansions = Cell_expansions
         self.Searchesc = Searchesc

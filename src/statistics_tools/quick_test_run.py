@@ -13,7 +13,7 @@ from src.data.read_maps_info import ReadMapsInfo
 from src.data.run_tests import SampleTest, RunTests
 
 # Dlite
-from src.D_start_lite.run_d_star_lite import RunDStarLite
+from src.D_star_lite.run_d_star_lite import RunDStarLite
 
 # FactoryStatistics
 from src.statistics_tools.statistics_methods import FactoryStatistics, Statistic
