@@ -26,21 +26,11 @@ class RunDijkstra:
         dijkstra.load_map_cells(self.cells)
         dijkstra.load_map_start_goal(self.start, self.goal)
         path, length = dijkstra.run_dijkstra()
-
+        # print(f"run_dijkstra| length={length}, path={path}")
         return length
 
     def run_dijkstra_on_test(self, sample_test: SampleTest):
         self.load_test(sample_test)
-        res = self.run_dijkstra()
+        length = self.run_dijkstra()
 
-        return res
-
-
-
-
-
-
-
-
-
-
+        return length

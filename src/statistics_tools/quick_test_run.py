@@ -1,5 +1,6 @@
 # reading maps and scenes
 from typing import Callable
+import os
 
 from src.LSS_LRTA_star.lss_lrta import manhattan_distance
 from src.LSS_LRTA_star.search import SearchTreePQS
@@ -11,6 +12,9 @@ from src.data.run_tests import SampleTest, RunTests
 
 # Dlite
 from src.D_start_lite.run_d_star_lite import RunDStarLite
+
+# FactoryStatistics
+from src.statistics_tools.statistics_methods import FactoryStatistics, Statistic
 
 
 class QuickTestRun:
@@ -25,10 +29,15 @@ class QuickTestRun:
         self.run_tests = RunTests()
         self.run_d_star_lite = RunDStarLite()
 
-    def read_data_from_files(self, path_to_file_map=None,
+    def read_data_from_files(self,
+                             full_path_to_file_map=None,
+                             full_path_to_file_scenes=None,
+                             path_to_file_map=None,
                              path_to_file_scenes=None):
-        self.cells = self.read_maps_info.read_map_from_file(path_to_file_map=path_to_file_map)
-        self.list_scenes = self.read_maps_info.read_scenes_from_file(path_to_file_scenes=path_to_file_scenes)
+        self.cells = self.read_maps_info.read_map_from_file(path_to_file_map=path_to_file_map,
+                                                            full_path_to_file_map=full_path_to_file_map)
+        self.list_scenes = self.read_maps_info.read_scenes_from_file(path_to_file_scenes=path_to_file_scenes,
+                                                                     full_path_to_file_scenes=full_path_to_file_scenes)
 
         self.list_all_tests = SampleTest.map_list_scenes_to_list_tests(cells=self.cells,
                                                                        list_scenes=self.list_scenes,
@@ -55,7 +64,6 @@ class QuickTestRun:
                            heuristic_func=manhattan_distance,
                            search_tree=SearchTreePQS,
                            lookahead=None, view_range=None):
-
         run_test_lss_lrta_star = TestLSSLRTAstar(
             heuristic_func, search_tree, lookahead, view_range).get_procedure(in_frame=False)
 
@@ -86,3 +94,24 @@ class QuickTestRun:
         factor_stats = self.run_tests.run_all_test(list_sample_tests=self.select_small_data)
 
         return factor_stats
+
+    def run_all_test_for_all_maps(self,
+                                  path_to_dir_maps: str = None,
+                                  path_to_dir_scenes: str = None) -> FactoryStatistics:
+        # path_to_dir_maps = "../data/our_data/random_obstacles.map"
+        # path_to_dir_scene = "../data/our_data/random_obstacles.map-scen"
+
+        # print(os.listdir(path_to_dir_maps))
+        # print(os.listdir(path_to_dir_scenes))
+
+        res_factory_stats = FactoryStatistics()
+        for cur_name_map, cur_name_scenes in zip(os.listdir(path_to_dir_maps), os.listdir(path_to_dir_scenes)):
+            full_path_to_file_map = path_to_dir_maps + '/' + cur_name_map
+            full_path_to_file_scenes = path_to_dir_scenes + '/' + cur_name_scenes
+            self.read_data_from_files(full_path_to_file_map=full_path_to_file_map,
+                                      full_path_to_file_scenes=full_path_to_file_scenes)
+
+            cur_factory_stats = self.run_all_test()
+            res_factory_stats.append_factory_stats(cur_factory_stats)
+
+        return res_factory_stats

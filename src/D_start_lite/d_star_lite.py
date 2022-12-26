@@ -29,13 +29,20 @@ class DStarLite:
         :param s_start: start location
         :param s_goal: end location
         """
+        self.dist_func = heuristic_4N
         self.heuristic = heuristic_4N
-        # self.heuristic = heuristic_8N
         if "exploration_setting" in kwargs:
             if kwargs['exploration_setting'] == '4N':
                 self.heuristic = heuristic_4N
             elif kwargs['exploration_setting'] == '8N':
                 self.heuristic = heuristic_8N
+
+        if "heuristic" in kwargs:
+            self.heuristic = kwargs['heuristic']
+
+        if 'dist_func' in kwargs:
+            self.dist_func = kwargs['dist_func']
+            print(f"DStarLite | dist_func= (_-_-_)")
 
 
         # for calc stats
@@ -93,7 +100,7 @@ class DStarLite:
         if not self.sensed_map.is_unoccupied(u) or not self.sensed_map.is_unoccupied(v):
             return float('inf')
         else:
-            return self.heuristic(u, v)
+            return self.dist_func(u, v)
 
     def contain(self, u: (int, int)) -> (int, int):
         # return u in self.U.vertices_in_heap
@@ -148,7 +155,8 @@ class DStarLite:
                                 if min_s > temp:
                                     min_s = temp
                             self.rhs[s] = min_s
-                    self.update_vertex(u)
+                    #self.update_vertex(u)
+                    self.update_vertex(s)
 
     def rescan(self) -> Vertices:
 

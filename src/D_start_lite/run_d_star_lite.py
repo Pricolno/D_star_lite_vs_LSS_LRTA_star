@@ -15,6 +15,10 @@ from src.statistics_tools.statistics_methods import Statistic
 
 class RunDStarLite:
     def __init__(self):
+        self.dist_func = None
+        self.heuristic = None
+
+
         self.last_time_set_timer = None
         self.ogrid = None
         self.is_current_ogrid_correct_in_dstar = False
@@ -58,6 +62,12 @@ class RunDStarLite:
     def load_view_range(self, view_range: int):
         self.view_range = view_range
 
+    def load_heuristic(self, heuristic: Callable):
+        self.heuristic = heuristic
+
+    def load_dist_func(self, dist_func: Callable):
+        self.dist_func = dist_func
+
     # def load_exploration_setting(self, exploration_setting: str):
     #    self.exploration_setting = exploration_setting
 
@@ -78,8 +88,11 @@ class RunDStarLite:
         else:
             self.dstar = DStarLite(map=self.ogrid,
                                    s_start=self.s_start,
-                                   s_goal=self.s_goal)
+                                   s_goal=self.s_goal,
+                                   heuristic=self.heuristic,
+                                   dist_func=self.dist_func)
             self.is_current_ogrid_correct_in_dstar = True
+
 
             self.create_slam()
 
@@ -300,6 +313,10 @@ class RunDStarLite:
             self.load_view_range(kwargs['view_range'])
         if 'exploration_setting' in kwargs:
             pass
+        if 'dist_func' in kwargs:
+            self.load_dist_func(dist_func=kwargs['dist_func'])
+        if 'heuristic' in kwargs:
+            self.load_heuristic(heuristic=kwargs['heuristic'])
 
         self.create_dstar()
 

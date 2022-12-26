@@ -3,7 +3,6 @@ from typing import Dict, List
 
 from src.D_start_lite.utils import get_movements_4n, get_movements_8n, heuristic_4N, heuristic_8N, Vertices, Vertex
 
-
 OBSTACLE = 255
 UNOCCUPIED = 0
 
@@ -14,12 +13,21 @@ class OccupancyGridMap:
         """
         set initial values for the map occupancy grid
         """
+
         if exploration_setting == '4N':
             self.heuristic = heuristic_4N
         elif exploration_setting == '8N':
             self.heuristic = heuristic_8N
 
-        #print(f"OccupancyGridMap.__init__: exploration_setting={exploration_setting}")
+        if 'heuristic' in kwargs:
+            self.heuristic = kwargs['heuristic']
+
+        self.dist_func = heuristic_4N
+        if 'dist_func' in kwargs:
+            self.dist_func = kwargs['dist_func']
+            print(f"OccupancyGridMap | dist_func= (_-_-_)")
+
+        # print(f"OccupancyGridMap.__init__: exploration_setting={exploration_setting}")
         self.y_size = y_size
         self.x_size = x_size
 
@@ -149,7 +157,7 @@ class OccupancyGridMap:
         :return:
         """
         (y, x) = vertex
-        #print(f"OccupancyGridMap.succ: exploration_setting={self.exploration_setting}")
+        # print(f"OccupancyGridMap.succ: exploration_setting={self.exploration_setting}")
         if self.exploration_setting == '4N':  # change this
             movements = get_movements_4n(y=y, x=x)
         else:
@@ -189,7 +197,7 @@ class OccupancyGridMap:
         nodes = [(y, x) for y in range(py - view_range, py + view_range + 1)
                  for x in range(px - view_range, px + view_range + 1)
                  if self.in_bounds((y, x))]
-        #print(f"OccupancyGridMap.local_observation view_range={view_range}  len(nodes)={len(nodes)} nodes={nodes}")
+        # print(f"OccupancyGridMap.local_observation view_range={view_range}  len(nodes)={len(nodes)} nodes={nodes}")
         for y, x in nodes:
             self.visited[y][x] = True
 
@@ -199,12 +207,12 @@ class OccupancyGridMap:
     def covert_list2d_to_ogrid(cells: List[List[int]],
                                exploration_setting='8N',
                                **kwargs) -> "OccupancyGridMap":
-        #print(f"covert_list2d_to_ogrid:cells={cells}")
+        # print(f"covert_list2d_to_ogrid:cells={cells}")
         # need assert for dim 2
         y_size = len(cells)
         x_size = len(cells[0])
 
-        #print(f"OccupancyGridMap.covert_list2d_to_ogrid: kwargs={kwargs}")
+        # print(f"OccupancyGridMap.covert_list2d_to_ogrid: kwargs={kwargs}")
         ogrid = OccupancyGridMap(y_size=y_size,
                                  x_size=x_size,
                                  exploration_setting=exploration_setting)
@@ -222,10 +230,12 @@ class SLAM:
         self.ground_truth_map = map
         self.slam_map = OccupancyGridMap(y_size=map.y_size,
                                          x_size=map.x_size,
-                                         exploration_setting=map.exploration_setting)
+                                         exploration_setting=map.exploration_setting,
+                                         heuristic=map.heuristic,
+                                         dist_func=map.dist_func)
         self.view_range = view_range
-        self.heuristic = map.heuristic
-
+        # self.heuristic = map.heuristic
+        self.dist_func = map.dist_func
 
     def restart_slam(self, **kwargs):
         # change 8N -> 4N
@@ -245,21 +255,22 @@ class SLAM:
         if not self.slam_map.is_unoccupied(u) or not self.slam_map.is_unoccupied(v):
             return float('inf')
         else:
-            return self.heuristic(u, v)
+            # return self.heuristic(u, v)
+            return self.dist_func(u, v)
 
     def rescan(self, global_position: (int, int)):
-        #print(f"SLAM.rescan start global_position={global_position}")
+        # print(f"SLAM.rescan start global_position={global_position}")
         # rescan local area
         local_observation = self.ground_truth_map.local_observation(global_position=global_position,
                                                                     view_range=self.view_range)
 
-        #print(f"SLAM.rescan finish find len(local_observation) = {len((local_observation))}, local_observation={local_observation}")
+        # print(f"SLAM.rescan finish find len(local_observation) = {len((local_observation))}, local_observation={local_observation}")
         vertices = self.update_changed_edge_costs(local_grid=local_observation)
 
         return vertices, self.slam_map
 
     def update_changed_edge_costs(self, local_grid: Dict) -> Vertices:
-        #print(f"SLAM.update_changed_edge_costs start  local_grid={local_grid}")
+        # print(f"SLAM.update_changed_edge_costs start  local_grid={local_grid}")
         vertices = Vertices()
         for node, value in local_grid.items():
             # if obstacle
@@ -285,5 +296,3 @@ class SLAM:
     def __str__(self):
         str_slam = f"""SLAM: view_range={self.view_range} """
         return str_slam
-
-

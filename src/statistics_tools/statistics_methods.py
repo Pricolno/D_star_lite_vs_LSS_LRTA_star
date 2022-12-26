@@ -69,6 +69,11 @@ class FactoryStatistics:
         for str_stat, stat in statistic.gen_stats():
             self.stats[str_stat].append(stat)
 
+    def append_factory_stats(self, factory_stats: 'FactoryStatistics'):
+        for stat in factory_stats.get_stats():
+            self.stats[stat].extend(factory_stats.get_stats()[stat])
+
+
     def get_stats(self):
         return self.stats
 

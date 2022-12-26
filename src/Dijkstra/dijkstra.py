@@ -38,7 +38,6 @@ class Dijkstra:
 
         while not (cur_u == self.start):
             full_cost += self.heuristic(cur_u, pred[cur_u])
-            #print(full_cost)
 
             cur_u = pred[cur_u]
             path.append(cur_u)
@@ -86,16 +85,15 @@ class Dijkstra:
                 if visited[u_next]:
                     continue
 
-
                 cost = self.heuristic(u, u_next)
                 g_next = g + cost
 
                 if dist[u_next] > g_next:
-                    #print(f"{u} {u_next}")
+                    # print(f"{u} {u_next}")
                     dist[u_next] = g_next
                     pred[u_next] = u
                     hq.heappush(queue, (g_next, u_next))
 
-        path = self.get_path(pred)
+        path, length = self.get_path(pred)
 
-        return path
+        return path, length

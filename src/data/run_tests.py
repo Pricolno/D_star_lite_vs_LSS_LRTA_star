@@ -7,6 +7,7 @@ from src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
 from src.Dijkstra.run_dijkstra import RunDijkstra
 from src.data.sample_test import SampleTest
 
+
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 # from statistics_tools.statistics_methods import Statistic, FactoryStatistics
 
@@ -25,8 +26,12 @@ class RunTests:
     def run_test(self, sample_test: SampleTest) -> Statistic:
         run_dij = RunDijkstra()
         optimal_length = run_dij.run_dijkstra_on_test(sample_test)
+        # print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length}")
+        # print(sample_test.cells[0])
         if optimal_length is None:
             print(f"No exists path sample_test={sample_test}")
+        else:
+            print(f"Exists path sample_test={sample_test}")
 
         stat = self.search_func(sample_test)
         stat.Optimal_length = optimal_length
@@ -60,12 +65,22 @@ class RunTests:
 
         list_tests = []
         n = len(list_of_all_tests)
-        min_ind = floor((n - 1) * prob_l) + offset
+        min_ind = floor((n - 1) * prob_l)
         max_ind = floor((n - 1) * prob_r)
+
+        # print(f"min_ind={min_ind} max_ind={max_ind}")
         assert (0 <= min_ind <= max_ind < n)
 
+        is_first_loop = True
         while count_of_tests > len(list_tests):
-            for cur_ind in range(min_ind, max_ind + 1):
+            cur_min_ind = min_ind
+            if not is_first_loop:
+                cur_min_ind = min_ind
+            if is_first_loop:
+                cur_min_ind = min_ind + offset
+                is_first_loop = False
+
+            for cur_ind in range(cur_min_ind, max_ind + 1):
                 list_tests.append(list_of_all_tests[cur_ind])
 
                 if len(list_tests) == count_of_tests:
@@ -93,4 +108,3 @@ class RunTests:
             list_tests.append(list_of_all_tests[ind])
 
         return list_tests
-
