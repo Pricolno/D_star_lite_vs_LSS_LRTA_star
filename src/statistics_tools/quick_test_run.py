@@ -102,7 +102,8 @@ class QuickTestRun:
                                   path_to_dir_scenes: str = None,
                                   max_count_map: int = np.inf,
                                   restart: bool = True,
-                                  name_saved_file=None) -> FactoryStatistics:
+                                  name_saved_file=None,
+                                  count_of_tests=None) -> FactoryStatistics:
         # path_to_dir_maps = "../data/our_data/random_obstacles.map"
         # path_to_dir_scene = "../data/our_data/random_obstacles.map-scen"
 
@@ -149,6 +150,8 @@ class QuickTestRun:
             self.read_data_from_files(full_path_to_file_map=full_path_to_file_map,
                                       full_path_to_file_scenes=full_path_to_file_scenes)
 
+            if not(count_of_tests is None):
+                self.select_tests_random(count_of_tests=count_of_tests, prob_r=0.5)
             cur_factory_stats = self.run_all_test()
             res_factory_stats.append_factory_stats(cur_factory_stats)
 

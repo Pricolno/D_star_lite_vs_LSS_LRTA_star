@@ -1,6 +1,7 @@
 import random
 from math import floor
 from typing import List, Callable
+from typing import Union
 import numpy as np
 
 from src.statistics_tools.statistics_methods import Statistic, FactoryStatistics
@@ -25,13 +26,14 @@ class RunTests:
     def load_sample_tests(self, list_sample_tests: List[SampleTest]):
         self.list_sample_tests = list_sample_tests
 
-    def run_test(self, sample_test: SampleTest) -> Statistic:
+    def run_test(self, sample_test: SampleTest) -> Union[Statistic, None]:
         run_dij = RunDijkstra()
         path, optimal_length = run_dij.run_dijkstra_on_test(sample_test)
         print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length} | path={path}")
         # print(sample_test.cells[0])
         if optimal_length is None:
             print(f"No exists path sample_test={sample_test}")
+            return None
         else:
             print(f"Exists path sample_test={sample_test}")
 
@@ -50,13 +52,13 @@ class RunTests:
 
         # print(f"RunTests.run_all_test: len(list_sample_tests)={len(list_sample_tests)} {len(list_sample_tests[0])}")
         for number, sample_test in enumerate(list_sample_tests):
-            print(f"Start run test №{number}  |  all_count_of_tests={self.all_count_of_tests} | count_of_maps={self.count_of_maps}")
+            print(f"Start run test №{number}/{len(list_sample_tests)}  |  all_count_of_tests={self.all_count_of_tests} | count_of_maps={self.count_of_maps}")
 
             self.all_count_of_tests += 1
 
             stat = self.run_test(sample_test)
-
-            factory_statistics.add_stat(stat)
+            if not(stat is None):
+                factory_statistics.add_stat(stat)
 
         return factory_statistics
 

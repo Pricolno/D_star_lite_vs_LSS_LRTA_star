@@ -31,7 +31,7 @@ LIST_PATH_TO_DIR_SCENES = ["../data/movingai_data/maze-scen",
                            ]
 
 
-def launch_test(name_file=None, lookahead=1, view_range=1, max_count_map=250//5, test_name="random_obstacles"):
+def launch_test(name_file=None, lookahead=1, view_range=1, max_count_map=250//5, test_name="random_obstacles", count_of_tests=None):
     name_saved_file = f'{test_name}/LSS_LRTA_star_{test_name}_lookahead_eq_{lookahead}_view_range_{view_range}'
     test_num_in_list = {'mazes': 0, 'random_obstacles': 1, 'den011d': 2, 'street': 3}
 
@@ -48,7 +48,8 @@ def launch_test(name_file=None, lookahead=1, view_range=1, max_count_map=250//5,
                                                             path_to_dir_scenes=path_to_dir_scenes,
                                                             max_count_map=max_count_map,
                                                             restart=False,
-                                                            name_saved_file=name_saved_file)
+                                                            name_saved_file=name_saved_file,
+                                                            count_of_tests=count_of_tests)
     print(f"Calculate stats on {factor_stats.count_of_maps} maps")
     # factor_stats.save_stats(name_file=name_saved_file, verbose=True)
 
@@ -87,6 +88,6 @@ if __name__ == '__main__':
     print("START MAIN LSS_LRTA_STAR")
     for l in range(3, 50, 2):
         print(f"LOOKAHEAD: {l}")
-        factor_stats = launch_test(lookahead=l, max_count_map=100, test_name='random_obstacles')
+        factor_stats = launch_test(lookahead=l, max_count_map=5, test_name='mazes', count_of_tests=5)
     #pprint(factor_stats.get_stats())
     exit()
