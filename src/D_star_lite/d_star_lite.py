@@ -6,8 +6,6 @@ from src.D_star_lite.ordered_dict import OrderedDictWithRemove, Priority
 from src.D_star_lite.grid import OccupancyGridMap
 from src.D_star_lite.utils import heuristic_4N, heuristic_8N, Vertices
 
-
-
 OBSTACLE = 255
 UNOCCUPIED = 0
 
@@ -16,6 +14,7 @@ class DStarLite:
     # BUG_OF_LOOPING = 1000
     WORK_IS_OVER = 1
     TIME_LIMIT = 400
+    NOT_FIND_PATH = 500
 
     LAST_SET_TIMER = None
     TIME_LIMIT_FOR_FIND_MOVE = 30.  # in second
@@ -42,8 +41,7 @@ class DStarLite:
 
         if 'dist_func' in kwargs:
             self.dist_func = kwargs['dist_func']
-            #print(f"DStarLite | dist_func= (_-_-_)")
-
+            # print(f"DStarLite | dist_func= (_-_-_)")
 
         # for calc stats
         self.Cell_expansions = None
@@ -155,7 +153,7 @@ class DStarLite:
                                 if min_s > temp:
                                     min_s = temp
                             self.rhs[s] = min_s
-                    #self.update_vertex(u)
+                    # self.update_vertex(u)
                     self.update_vertex(s)
 
     def rescan(self) -> Vertices:
@@ -198,7 +196,9 @@ class DStarLite:
             if self.get_time_from_timer() > self.TIME_LIMIT_FOR_FIND_MOVE:
                 return self.TIME_LIMIT, path, self.g, self.rhs
 
-            assert (self.rhs[self.s_start] != float('inf')), "There is no known path!"
+            # assert (self.rhs[self.s_start] != float('inf')), "There is no known path!"
+            if self.rhs[self.s_start] == float('inf'):
+                return self.NOT_FIND_PATH, None, None, None
 
             succ = self.sensed_map.succ(self.s_start, avoid_obstacles=True)
 

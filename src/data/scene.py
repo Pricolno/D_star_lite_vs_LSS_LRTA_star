@@ -18,9 +18,10 @@ class Scene:
         self.hard_lvl = hard_lvl
         self.height = height
         self.width = width
-        # self.start = start_j, start_i
+        #self.start = start_j, start_i
         self.start = start_i, start_j
-        # self.goal = goal_j, goal_i
+
+        #self.goal = goal_j, goal_i
         self.goal = goal_i, goal_j,
 
         self.optimal_length = optimal_length
@@ -44,6 +45,10 @@ class Scene:
         str_goal = f"{str(self.goal[1])} {str(self.goal[0])}"
         str_optimal_length = str(self.optimal_length)
 
-        str_scene = " ".join(
-            [str_hard_lvl, str_name_of_map, str_height, str_width, str_start, str_goal, str_optimal_length])
+        #list_str_scene = [str_hard_lvl, str_name_of_map, str_height, str_width, str_start, str_goal, str_optimal_length]
+        list_str_scene = [str_hard_lvl, str_name_of_map, str_width, str_height, str_start, str_goal, str_optimal_length]
+
+        str_scene = " ".join(list_str_scene)
+
+
         return str_scene

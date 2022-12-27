@@ -202,7 +202,7 @@ class RunDStarLite:
 
     def run_with_gui(self, delay_for_every_step=50,
                      **kwargs):
-        is_doing_gif = True
+        is_doing_gif = False
         if "path_saved_photo" in kwargs:
             is_doing_gif = True
             self.number_image_for_gif = 0
@@ -329,6 +329,9 @@ class RunDStarLite:
                 print(f"Walking is failed by TIME_LIMIT!")
 
                 # print(f"RUNNING_FLAG={RUNNING_FLAG} | path={cur_path}")
+                return Statistic()
+            if RUNNING_FLAG == self.dstar.NOT_FIND_PATH:
+                print(f"Walking is failed by NOT_FIND_PATH!")
                 return Statistic()
 
             # print(f"Find len path = {len(cur_path)}. path[1]={cur_path[1]}")

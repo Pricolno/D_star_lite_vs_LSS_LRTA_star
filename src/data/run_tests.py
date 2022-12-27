@@ -27,8 +27,8 @@ class RunTests:
 
     def run_test(self, sample_test: SampleTest) -> Statistic:
         run_dij = RunDijkstra()
-        optimal_length = run_dij.run_dijkstra_on_test(sample_test)
-        # print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length}")
+        path, optimal_length = run_dij.run_dijkstra_on_test(sample_test)
+        print(f"run_test| sample_test={sample_test} | optimal_length={optimal_length} | path={path}")
         # print(sample_test.cells[0])
         if optimal_length is None:
             print(f"No exists path sample_test={sample_test}")

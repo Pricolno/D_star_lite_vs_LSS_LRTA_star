@@ -31,7 +31,7 @@ LIST_PATH_TO_DIR_SCENES = ["../data/movingai_data/maze-scen",
                            ]
 
 
-def launch_test(name_file=None, lookahead=1, view_range=1, max_count_map=250//5):
+def launch_test(name_saved_file=None, lookahead=1, view_range=1, max_count_map=250//5):
     name_saved_file = f'LSS_LRTA_star_random_obstacles_lookahead_eq_{lookahead}_view_range_{view_range}_max_count_{max_count_map}'
 
     Quick_Test_Run = QuickTestRun()
