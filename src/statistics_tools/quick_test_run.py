@@ -168,7 +168,8 @@ class QuickTestRun:
                                         restart: bool = True,
                                         name_saved_file=None,
                                         gui=False,
-                                        view_range=10) -> FactoryStatistics:
+                                        view_range=10,
+                                        count_of_tests=None) -> FactoryStatistics:
 
 
         self.run_tests.all_count_of_tests = 0
@@ -216,6 +217,8 @@ class QuickTestRun:
             self.load_d_star_lite(gui=gui,
                                   view_range=view_range)
 
+            if not(count_of_tests is None):
+                self.select_tests_random(count_of_tests=count_of_tests, prob_r=0.5)
             cur_factory_stats = self.run_all_test()
             res_factory_stats.append_factory_stats(cur_factory_stats)
 

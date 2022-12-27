@@ -28,7 +28,7 @@ LIST_PATH_TO_DIR_SCENES = ["../data/movingai_data/maze-scen",
                            ]
 
 
-def launch_test_Dlite(name_saved_file=None, view_range=1, max_count_map=250 // 5):
+def launch_test_Dlite(name_saved_file=None, view_range=1, max_count_map=250 // 5, count_of_tests=None):
     name_saved_file = f'random_obstacles/D_Lite_star_random_obstacles_view_range_{view_range}_max_count_{max_count_map}'
     path_to_dir_maps = LIST_PATH_TO_DIR_MAPS[1]
     path_to_dir_scenes = LIST_PATH_TO_DIR_SCENES[1]
@@ -41,7 +41,8 @@ def launch_test_Dlite(name_saved_file=None, view_range=1, max_count_map=250 // 5
                                                                   path_to_dir_scenes=path_to_dir_scenes,
                                                                   max_count_map=max_count_map,
                                                                   restart=True,
-                                                                  name_saved_file=name_saved_file)
+                                                                  name_saved_file=name_saved_file,
+                                                                  count_of_tests=count_of_tests)
     # pprint(factor_stats.get_stats())
     return factor_stats
 
@@ -63,4 +64,4 @@ def launch_old_Dlite():
 
 
 if __name__ == "__main__":
-    launch_test_Dlite()
+    launch_test_Dlite(max_count_map=3, count_of_tests=3)
