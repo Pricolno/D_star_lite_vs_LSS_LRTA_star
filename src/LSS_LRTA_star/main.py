@@ -2,7 +2,7 @@ from lss_lrta import lss_lrta_star, manhattan_distance
 from search import SearchTreePQS
 from src.data.read_maps_info import ReadMapsInfo
 from src.data.run_tests import SampleTest, RunTests
-from validating import simple_test, toy_test, base_test, super_test, TestLSSLRTAstar
+from validating import simple_test
 
 LIST_PATH_TO_FILE_MAP = ["den011d.map/den011d.map",
                          "street-map/Berlin_0_256.map",
@@ -14,10 +14,7 @@ LIST_PATH_TO_FILE_SCENES = ["den011d.map-scen/den011d.map.scen",
 
 
 if __name__ == '__main__':
-    res = simple_test(lss_lrta_star, manhattan_distance, SearchTreePQS, 15, task=1, map_type=1)
-    # res = toy_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 100)
-    # res = base_test(lss_lrta_star, 0, manhattan_distance, SearchTreePQS, 3)
-    #res = simple_test(lss_lrta_star, 1, manhattan_distance, SearchTreePQS, 10)
+    res = simple_test(lss_lrta_star, manhattan_distance, SearchTreePQS, 15, view_range=2, task=1, map_type=1)
 
     '''
     read_maps_info = ReadMapsInfo()

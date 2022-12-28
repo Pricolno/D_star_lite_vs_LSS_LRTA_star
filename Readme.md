@@ -43,3 +43,44 @@ The current implementation was inspired as provided in the article in [S. Koenig
 ![](docs/pseudocode_LSS_LRTA.png)
 
 
+### D* lite | implementation
+
+#### Dependencies
+
+* pygame
+* numpy
+* win32api
+* sortedcontainers
+* PIL
+
+#### quick run (need file `D_star_lite_vs_LSS_LRTA_star/src/D_star_lite/quick_start_Dlite_star.py`)
+
+```
+cd D_star_lite_vs_LSS_LRTA_star/src/D_star_lite
+python3 quick_start_Dlite_star.py
+
+```
+
+* change map:
+`cur_cells = read_maps_info.get_simple_map()` <br>
+`cur_cells : List[List[{0, 1}]]` - 1 obstacle, 0 empty cell
+
+* change scen (start, goal)
+example create be in `D_star_lite_vs_LSS_LRTA_star/src/data/simple_scenes.py` <br>
+`class Scene` be in (`D_star_lite_vs_LSS_LRTA_star/src/data/scene.py`) <br>
+
+example create Scene:
+```
+scene2 = Scene(
+    hard_lvl=1,
+    height=height_map, width=width_map,
+    start_i=2, start_j=29,
+    goal_i=6, goal_j=2,
+    optimal_length=27
+)
+```
+
+```list_scenes = read_maps_info.get_simple_scene(is_list=True, num_scene=2)```<br>
+for custom scene need to set like this: <br>
+```list_scenes = [scene_big, scene_medium, scene_small]```
+

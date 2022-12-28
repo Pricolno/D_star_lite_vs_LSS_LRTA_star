@@ -87,11 +87,13 @@ def astar(grid_map_ptr, start_i, start_j, goal_i, goal_j, heuristic_func=None, s
     return path_flag, last_node, ast
 
 
-def dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree=None):
+def dijkstra(grid_map_ptr, a_open, a_closed, search_tree=None):
     grid_map = grid_map_ptr[0]
     dst = search_tree()  # Dijkstra's search tree
-    start = Node(dijkstra_start.i, dijkstra_start.j, g=dijkstra_start.h)
-    dst.add_to_open(start)
+    #start = Node(dijkstra_start.i, dijkstra_start.j, g=dijkstra_start.h)
+    #dst.add_to_open(start)
+    for node in a_open:
+        dst.add_to_open(Node(node.i, node.j, g=node.h))
     steps = 0
     while a_closed and dst.OPEN:
         steps += 1
@@ -133,11 +135,12 @@ def lss_lrta_star(grid_map_ptr, start_i, start_j,
         )
         # dijkstra procedure
         a_closed = copy.copy(search_tree_log.CLOSED)
+        a_open = copy.copy(search_tree_log.OPEN)
         if search_tree_log.open_is_empty():
             return results
         dijkstra_start = search_tree_log.choose_best_h_node_from_open_with(cur_node=None)
         # TODO: cur_node is last_node?
-        dijkstra(grid_map_ptr, dijkstra_start, a_closed, search_tree)
+        dijkstra(grid_map_ptr, a_open, a_closed, search_tree)
 
         # set viewed obstacles and find real last node
         viewed_obstacles = []
